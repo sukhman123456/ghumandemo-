@@ -1,0 +1,203 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-impact: "Bebas Neue", sans-serif;
+  --font-script: "Caveat", cursive;
+
+  --color-cream: #F5F0E6;
+  --color-cream-light: #FAF7F2;
+  --color-espresso: #171411;
+  --color-espresso-card: #201C18;
+  --color-charcoal: #0D0D0D;
+  --color-gold: #D9A441;
+  --color-gold-hover: #E8B452;
+  --color-gold-light: #F7E7C4;
+  --color-olive: #66724A;
+  --color-soft-brown: #8A5A3B;
+  --color-pure-veg: #16A34A;
+
+  --color-background: #0D0D0D;
+  --color-foreground: #F5F0E6;
+  --color-card: #171411;
+  --color-card-foreground: #F5F0E6;
+  --color-primary: #D9A441;
+  --color-primary-foreground: #0D0D0D;
+  --color-secondary: #201C18;
+  --color-secondary-foreground: #F5F0E6;
+  --color-muted: #28231E;
+  --color-muted-foreground: #A89E92;
+  --color-border: #332B23;
+  --color-ring: #D9A441;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    border-color: #332B23;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    background-color: #0D0D0D;
+    color: #F5F0E6;
+    font-family: var(--font-sans);
+  }
+  body {
+    margin: 0;
+    background-color: #0D0D0D;
+    color: #F5F0E6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: #D9A441;
+    color: #0D0D0D;
+  }
+}
+
+/* Custom Typography Helpers */
+.font-display {
+  font-family: "Outfit", sans-serif;
+}
+.font-luxury {
+  font-family: "Playfair Display", Georgia, serif;
+}
+.font-syne {
+  font-family: "Syne", sans-serif;
+}
+.font-sans {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+.font-impact {
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 0.05em;
+}
+.font-script {
+  font-family: "Caveat", cursive;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+::-webkit-scrollbar-thumb {
+  background: #332B23;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D9A441;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Headlight Glow and Truck Ambience */
+.headlight-glow {
+  background: radial-gradient(circle, rgba(217, 164, 65, 0.45) 0%, rgba(217, 164, 65, 0.12) 45%, transparent 70%);
+}
+
+.truck-led-border {
+  box-shadow: 0 0 15px rgba(217, 164, 65, 0.35), inset 0 0 15px rgba(217, 164, 65, 0.2);
+}
+
+.gold-glow {
+  filter: drop-shadow(0 0 16px rgba(217, 164, 65, 0.45));
+}
+
+.gold-glow-subtle {
+  filter: drop-shadow(0 0 8px rgba(217, 164, 65, 0.25));
+}
+
+/* Interactive Food Cards */
+.food-card {
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms ease;
+  will-change: transform;
+}
+.food-card:hover {
+  transform: translateY(-6px);
+  border-color: #D9A441;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(217, 164, 65, 0.15);
+}
+.food-card img {
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.food-card:hover img {
+  transform: scale(1.06);
+}
+
+/* Radar Ping for Truck Hotspots */
+@keyframes radar-ping {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(217, 164, 65, 0.8);
+  }
+  70% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 14px rgba(217, 164, 65, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(217, 164, 65, 0);
+  }
+}
+.hotspot-ping {
+  animation: radar-ping 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Road Line Animation for Highway Route */
+@keyframes highway-dash {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+.highway-line {
+  stroke-dasharray: 8 6;
+  animation: highway-dash 12s linear infinite;
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: rgba(23, 20, 17, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(217, 164, 65, 0.2);
+}
+
+.glass-nav {
+  background: rgba(13, 13, 13, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(217, 164, 65, 0.15);
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
