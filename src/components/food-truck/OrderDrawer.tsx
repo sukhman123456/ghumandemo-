@@ -27,20 +27,20 @@ export function OrderDrawer() {
       onClick={closeOrderDrawer}
     >
       <div
-        className="relative w-full max-w-md bg-[#171411] text-[#F5F0E6] h-full flex flex-col justify-between border-l border-[#332B23] shadow-2xl animate-in slide-in-from-right duration-300"
+        className="relative w-full max-w-md bg-[#17120F] text-[#F3EBDD] h-full flex flex-col justify-between border-l border-[#3A2920] shadow-2xl animate-in slide-in-from-right duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Drawer Header */}
-        <div className="p-6 border-b border-[#332B23] flex items-center justify-between">
+        <div className="p-6 border-b border-[#3A2920] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="size-10 rounded-full bg-[#D9A441]/10 border border-[#D9A441] flex items-center justify-center text-[#D9A441]">
+            <div className="size-10 rounded-full bg-[#C9A45C]/10 border border-[#C9A45C] flex items-center justify-center text-[#C9A45C]">
               <ShoppingBag className="size-5" />
             </div>
             <div>
-              <h2 className="font-display font-black text-lg text-[#F5F0E6] leading-none">
+              <h2 className="font-display font-black text-lg text-[#F3EBDD] leading-none">
                 Your Food Truck Order
               </h2>
-              <span className="text-[11px] text-[#D9A441] font-semibold mt-1 block">
+              <span className="text-[11px] text-[#C9A45C] font-semibold mt-1 block">
                 {totalCount} item{totalCount === 1 ? "" : "s"} selected
               </span>
             </div>
@@ -50,7 +50,7 @@ export function OrderDrawer() {
             type="button"
             onClick={closeOrderDrawer}
             aria-label="Close order drawer"
-            className="size-9 rounded-full bg-[#201C18] border border-[#332B23] flex items-center justify-center text-[#F5F0E6] hover:text-[#D9A441] transition-colors"
+            className="size-9 rounded-full bg-[#201814] border border-[#3A2920] flex items-center justify-center text-[#F3EBDD] hover:text-[#C9A45C] transition-colors"
           >
             <X className="size-4" />
           </button>
@@ -60,13 +60,13 @@ export function OrderDrawer() {
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {order.length === 0 ? (
             <div className="py-16 text-center flex flex-col items-center justify-center">
-              <div className="size-16 rounded-full bg-[#201C18] border border-[#332B23] flex items-center justify-center text-[#A89E92] mb-4">
+              <div className="size-16 rounded-full bg-[#201814] border border-[#3A2920] flex items-center justify-center text-[#D1C2B0] mb-4">
                 <UtensilsCrossed className="size-8" />
               </div>
-              <h3 className="font-display font-bold text-base text-[#F5F0E6]">
+              <h3 className="font-display font-bold text-base text-[#F3EBDD]">
                 Your tray is empty
               </h3>
-              <p className="text-xs text-[#A89E92] mt-1 max-w-xs">
+              <p className="text-xs text-[#D1C2B0] mt-1 max-w-xs">
                 Explore the menu to add freshly prepared pure veg pizzas, burgers, wraps and shakes!
               </p>
             </div>
@@ -75,41 +75,41 @@ export function OrderDrawer() {
               {order.map(({ item, quantity }) => (
                 <div
                   key={item.id}
-                  className="flex items-center gap-3.5 p-3.5 rounded-xl bg-[#201C18] border border-[#332B23] justify-between"
+                  className="flex items-center gap-3.5 p-3.5 rounded-xl bg-[#201814] border border-[#3A2920] justify-between"
                 >
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="size-14 rounded-lg object-cover bg-[#0D0D0D] shrink-0"
+                    className="size-14 rounded-lg object-cover bg-[#17120F] shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-display font-bold text-sm text-[#F5F0E6] truncate">
+                    <h4 className="font-display font-bold text-sm text-[#F3EBDD] truncate">
                       {item.name}
                     </h4>
-                    <span className="text-xs font-semibold text-[#D9A441] block mt-0.5">
+                    <span className="text-xs font-semibold text-[#C9A45C] block mt-0.5">
                       ₹{item.price} each
                     </span>
                   </div>
 
                   {/* Quantity adjustment */}
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center rounded-lg border border-[#332B23] bg-[#171411]">
+                    <div className="flex items-center rounded-lg border border-[#3A2920] bg-[#17120F]">
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.id, -1)}
                         aria-label={`Decrease quantity of ${item.name}`}
-                        className="p-1.5 text-[#A89E92] hover:text-[#D9A441]"
+                        className="p-1.5 text-[#D1C2B0] hover:text-[#C9A45C]"
                       >
                         <Minus className="size-3" />
                       </button>
-                      <span className="px-2 text-xs font-bold text-[#F5F0E6]">
+                      <span className="px-2 text-xs font-bold text-[#F3EBDD]">
                         {quantity}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.id, 1)}
                         aria-label={`Increase quantity of ${item.name}`}
-                        className="p-1.5 text-[#A89E92] hover:text-[#D9A441]"
+                        className="p-1.5 text-[#D1C2B0] hover:text-[#C9A45C]"
                       >
                         <Plus className="size-3" />
                       </button>
@@ -119,7 +119,7 @@ export function OrderDrawer() {
                       type="button"
                       onClick={() => removeFromOrder(item.id)}
                       aria-label={`Remove ${item.name}`}
-                      className="p-1.5 text-[#A89E92] hover:text-red-400"
+                      className="p-1.5 text-[#D1C2B0] hover:text-red-400"
                     >
                       <Trash2 className="size-4" />
                     </button>
@@ -131,7 +131,7 @@ export function OrderDrawer() {
               <div className="pt-2">
                 <label
                   htmlFor="order-notes"
-                  className="block text-[11px] font-bold uppercase tracking-wider text-[#A89E92] mb-1.5"
+                  className="block text-[11px] font-bold uppercase tracking-wider text-[#D1C2B0] mb-1.5"
                 >
                   Special instructions (e.g. Extra spicy / Highway pickup)
                 </label>
@@ -141,7 +141,7 @@ export function OrderDrawer() {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Notes for the chef..."
-                  className="w-full text-xs p-3 rounded-lg bg-[#201C18] border border-[#332B23] text-[#F5F0E6] focus:border-[#D9A441] focus:outline-none"
+                  className="w-full text-xs p-3 rounded-lg bg-[#201814] border border-[#3A2920] text-[#F3EBDD] focus:border-[#C9A45C] focus:outline-none"
                 />
               </div>
 
@@ -149,7 +149,7 @@ export function OrderDrawer() {
               <button
                 type="button"
                 onClick={clearOrder}
-                className="text-[11px] text-[#A89E92] hover:text-red-400 underline font-medium"
+                className="text-[11px] text-[#D1C2B0] hover:text-red-400 underline font-medium"
               >
                 Clear all items
               </button>
@@ -158,10 +158,10 @@ export function OrderDrawer() {
         </div>
 
         {/* Drawer Footer Actions */}
-        <div className="p-6 border-t border-[#332B23] bg-[#201C18]/90 space-y-3">
+        <div className="p-6 border-t border-[#3A2920] bg-[#201814]/90 space-y-3">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-[#A89E92]">Total Bill Amount:</span>
-            <span className="font-display font-black text-2xl text-[#D9A441]">
+            <span className="text-[#D1C2B0]">Total Bill Amount:</span>
+            <span className="font-display font-black text-2xl text-[#C9A45C]">
               ₹{totalPrice}
             </span>
           </div>
@@ -176,7 +176,7 @@ export function OrderDrawer() {
             href={getWhatsAppOrderUrl(notes)}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-2 rounded bg-gradient-to-r from-[#25D366] to-[#128C7E] py-3.5 text-xs font-bold uppercase tracking-widest text-[#0D0D0D] shadow-lg hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] transition-all transform hover:-translate-y-0.5"
+            className="w-full flex items-center justify-center gap-2 rounded bg-gradient-to-r from-[#25D366] to-[#128C7E] py-3.5 text-xs font-bold uppercase tracking-widest text-[#17120F] shadow-lg hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] transition-all transform hover:-translate-y-0.5"
           >
             <MessageCircle className="size-4" />
             <span>Send Order via WhatsApp</span>
@@ -185,9 +185,9 @@ export function OrderDrawer() {
           {/* Direct Call Button */}
           <a
             href="tel:+919501201215"
-            className="w-full flex items-center justify-center gap-2 rounded border border-[#332B23] bg-[#171411] py-3 text-xs font-semibold text-[#F5F0E6] hover:border-[#D9A441] hover:text-[#D9A441] transition-all"
+            className="w-full flex items-center justify-center gap-2 rounded border border-[#3A2920] bg-[#17120F] py-3 text-xs font-semibold text-[#F3EBDD] hover:border-[#C9A45C] hover:text-[#C9A45C] transition-all"
           >
-            <Phone className="size-3.5 text-[#D9A441]" />
+            <Phone className="size-3.5 text-[#C9A45C]" />
             <span>Call Kitchen (095012 01215)</span>
           </a>
         </div>

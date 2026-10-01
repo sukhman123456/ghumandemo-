@@ -97,20 +97,20 @@ export function FoodGallery() {
   return (
     <section
       id="gallery"
-      className="relative bg-[#171411] text-[#F5F0E6] py-20 lg:py-28 overflow-hidden border-t border-[#332B23]"
+      className="relative bg-[#17120F] text-[#F3EBDD] py-20 lg:py-28 overflow-hidden border-t border-[#3A2920]"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[#D9A441]">
-              <Camera className="size-3.5 text-[#D9A441]" />
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[#C9A45C]">
+              <Camera className="size-3.5 text-[#C9A45C]" />
               VISUAL JOURNAL
             </div>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-[#F5F0E6] mt-3">
-              THE GHUMANS <span className="text-[#D9A441]">GALLERY</span>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-[#F3EBDD] mt-3">
+              THE GHUMANS <span className="text-[#C9A45C]">GALLERY</span>
             </h2>
-            <p className="text-sm sm:text-base text-[#A89E92] mt-2">
+            <p className="text-sm sm:text-base text-[#D1C2B0] mt-2">
               A feast for your eyes. Real truck photos, sizzling street food and refreshers.
             </p>
           </div>
@@ -126,8 +126,8 @@ export function FoodGallery() {
                   onClick={() => setFilter(cat.id)}
                   className={`text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition-all ${
                     isSelected
-                      ? "bg-[#D9A441] text-[#0D0D0D] border-[#D9A441] shadow-md"
-                      : "bg-[#201C18] text-[#A89E92] border-[#332B23] hover:border-[#D9A441]/50 hover:text-[#F5F0E6]"
+                      ? "bg-[#C9A45C] text-[#17120F] border-[#C9A45C] shadow-md"
+                      : "bg-[#201814] text-[#D1C2B0] border-[#3A2920] hover:border-[#C9A45C]/50 hover:text-[#F3EBDD]"
                   }`}
                 >
                   {cat.label}
@@ -148,7 +148,7 @@ export function FoodGallery() {
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") setSelectedPhoto(item);
               }}
-              className={`group relative overflow-hidden rounded-2xl border border-[#332B23] bg-[#0D0D0D] cursor-pointer hover:border-[#D9A441] transition-all duration-500 ${item.span}`}
+              className={`group relative overflow-hidden rounded-2xl border border-[#3A2920] bg-[#17120F] cursor-pointer hover:border-[#C9A45C] transition-all duration-500 shadow-md ${item.span}`}
             >
               <img
                 src={item.image}
@@ -158,20 +158,20 @@ export function FoodGallery() {
               />
 
               {/* Dark Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-black/20 opacity-80 group-hover:opacity-90 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#17120F] via-transparent to-black/20 opacity-80 group-hover:opacity-90 transition-opacity" />
 
               {/* Item Info on Hover */}
               <div className="absolute inset-x-0 bottom-0 p-5 flex items-end justify-between gap-3">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#D9A441] block">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9A45C] block">
                     {item.category}
                   </span>
-                  <h3 className="font-display font-bold text-sm sm:text-base text-[#F5F0E6]">
+                  <h3 className="font-display font-bold text-sm sm:text-base text-[#F3EBDD]">
                     {item.title}
                   </h3>
-                  <p className="text-[11px] text-[#A89E92] line-clamp-1">{item.subtitle}</p>
+                  <p className="text-[11px] text-[#D1C2B0] line-clamp-1">{item.subtitle}</p>
                 </div>
-                <div className="size-8 rounded-full bg-[#D9A441] text-[#0D0D0D] flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+                <div className="size-8 rounded-full bg-[#C9A45C] text-[#17120F] flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
                   <ArrowUpRight className="size-4" />
                 </div>
               </div>
@@ -188,14 +188,14 @@ export function FoodGallery() {
             onClick={() => setSelectedPhoto(null)}
           >
             <div
-              className="relative max-w-4xl w-full bg-[#171411] border border-[#D9A441]/40 rounded-2xl overflow-hidden shadow-2xl"
+              className="relative max-w-4xl w-full bg-[#201814] border border-[#C9A45C]/40 rounded-2xl overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 type="button"
                 onClick={() => setSelectedPhoto(null)}
                 aria-label="Close photo preview"
-                className="absolute top-4 right-4 z-10 size-10 rounded-full bg-[#0D0D0D]/80 border border-[#332B23] text-[#F5F0E6] hover:text-[#D9A441] flex items-center justify-center transition-colors"
+                className="absolute top-4 right-4 z-10 size-10 rounded-full bg-[#17120F]/80 border border-[#3A2920] text-[#F3EBDD] hover:text-[#C9A45C] flex items-center justify-center transition-colors"
               >
                 <X className="size-5" />
               </button>
@@ -208,17 +208,17 @@ export function FoodGallery() {
                 />
               </div>
 
-              <div className="p-6 bg-[#171411] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-[#332B23]">
+              <div className="p-6 bg-[#201814] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-[#3A2920]">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#D9A441]">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9A45C]">
                     {selectedPhoto.category}
                   </span>
-                  <h3 className="font-display text-xl font-bold text-[#F5F0E6]">
+                  <h3 className="font-display text-xl font-bold text-[#F3EBDD]">
                     {selectedPhoto.title}
                   </h3>
-                  <p className="text-xs text-[#A89E92] mt-1">{selectedPhoto.subtitle}</p>
+                  <p className="text-xs text-[#D1C2B0] mt-1">{selectedPhoto.subtitle}</p>
                 </div>
-                <div className="text-xs font-semibold text-[#D9A441] flex items-center gap-1.5">
+                <div className="text-xs font-semibold text-[#C9A45C] flex items-center gap-1.5">
                   <Sparkles className="size-4" />
                   Ghumans Kitchen Express
                 </div>

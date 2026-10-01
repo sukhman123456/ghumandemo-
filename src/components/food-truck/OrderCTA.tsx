@@ -9,44 +9,44 @@ export function OrderCTA() {
     encodeURIComponent("Hello Ghumans Kitchen Express! I am craving food from your truck. Please take my order!");
 
   return (
-    <section className="relative bg-[#0D0D0D] text-[#F5F0E6] py-24 lg:py-32 overflow-hidden border-t border-b border-[#332B23]">
+    <section className="relative bg-[#17120F] text-[#F3EBDD] py-24 lg:py-32 overflow-hidden border-t border-b border-[#3A2920]">
       {/* Background Food Truck with Dark Cinematic Overlay */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <img
           src="/ghumans-truck.jpg"
           alt="Ghumans Kitchen Express Food Truck background"
           loading="lazy"
-          className="w-full h-full object-cover object-[center_40%] scale-105 filter brightness-50"
+          className="w-full h-full object-cover object-[center_40%] scale-105 filter brightness-45"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0D0D0D] via-[#0D0D0D]/85 to-[#0D0D0D]/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#17120F] via-[#17120F]/85 to-[#17120F]/90" />
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 50%, rgba(217, 164, 65, 0.25) 0%, rgba(13, 13, 13, 0.85) 60%, #0D0D0D 100%)",
+              "radial-gradient(ellipse at 50% 50%, rgba(201, 164, 92, 0.2) 0%, rgba(23, 18, 15, 0.85) 60%, #17120F 100%)",
           }}
         />
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
         {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#D9A441]/50 bg-[#171411]/90 backdrop-blur-md px-4 py-1.5 shadow-lg mb-6">
-          <Sparkles className="size-3.5 text-[#D9A441]" />
-          <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#D9A441]">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#C9A45C]/50 bg-[#201814]/90 backdrop-blur-md px-4 py-1.5 shadow-lg mb-6">
+          <Sparkles className="size-3.5 text-[#C9A45C]" />
+          <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#C9A45C]">
             FOOD ON WHEELS • FRESH & PURE VEG
           </span>
         </div>
 
         {/* Primary Callout Typography */}
-        <h2 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight text-[#F5F0E6] leading-none">
+        <h2 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight text-[#F3EBDD] leading-none">
           HUNGRY?
         </h2>
 
-        <p className="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-[#D9A441] mt-4 tracking-normal">
+        <p className="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-[#C9A45C] mt-4 tracking-normal">
           LET THE TRUCK COME TO YOU.
         </p>
 
-        <p className="text-sm sm:text-base text-[#F5F0E6]/80 mt-4 max-w-xl mx-auto leading-relaxed">
+        <p className="text-sm sm:text-base text-[#D1C2B0] mt-4 max-w-xl mx-auto leading-relaxed">
           Order for pickup on Grand Trunk Road, curb-side takeaway, or direct WhatsApp ordering. Sizzling hot pure veg favourites prepared fresh in minutes.
         </p>
 
@@ -55,7 +55,7 @@ export function OrderCTA() {
           <button
             type="button"
             onClick={() => openOrderDrawer()}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded bg-gradient-to-r from-[#D9A441] via-[#E8B452] to-[#D9A441] px-8 py-4 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#0D0D0D] shadow-[0_0_30px_rgba(217,164,65,0.5)] hover:shadow-[0_0_40px_rgba(217,164,65,0.7)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded bg-gradient-to-r from-[#C9A45C] via-[#D4B36D] to-[#C9A45C] px-8 py-4 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#17120F] shadow-[0_0_30px_rgba(201,164,92,0.4)] hover:shadow-[0_0_40px_rgba(201,164,92,0.6)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
           >
             <ShoppingBag className="size-4" />
             <span>ORDER NOW</span>
@@ -65,24 +65,24 @@ export function OrderCTA() {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded border border-[#25D366] bg-[#171411]/90 backdrop-blur-md px-8 py-4 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#F5F0E6] hover:bg-[#25D366] hover:text-[#0D0D0D] transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded border border-[#25D366] bg-[#201814]/90 backdrop-blur-md px-8 py-4 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#F3EBDD] hover:bg-[#25D366] hover:text-[#17120F] transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg"
           >
-            <MessageCircle className="size-4 text-[#25D366] group-hover:text-[#0D0D0D]" />
+            <MessageCircle className="size-4 text-[#25D366] group-hover:text-[#17120F]" />
             <span>WHATSAPP US</span>
           </a>
         </div>
 
         {/* Phone line reassurance */}
-        <div className="mt-8 flex items-center justify-center gap-3 text-xs text-[#A89E92]">
+        <div className="mt-8 flex items-center justify-center gap-3 text-xs text-[#D1C2B0]">
           <span>Direct Kitchen Line:</span>
           <a
             href="tel:+919501201215"
-            className="text-[#D9A441] font-bold hover:underline flex items-center gap-1.5"
+            className="text-[#C9A45C] font-bold hover:underline flex items-center gap-1.5"
           >
             <Phone className="size-3.5" />
             095012 01215
           </a>
-          <span className="text-[#332B23]">•</span>
+          <span className="text-[#3A2920]">•</span>
           <span>Open Daily Until 10 PM</span>
         </div>
       </div>

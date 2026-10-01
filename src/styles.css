@@ -10,30 +10,27 @@
   --font-impact: "Bebas Neue", sans-serif;
   --font-script: "Caveat", cursive;
 
-  --color-cream: #F5F0E6;
-  --color-cream-light: #FAF7F2;
-  --color-espresso: #171411;
-  --color-espresso-card: #201C18;
-  --color-charcoal: #0D0D0D;
-  --color-gold: #D9A441;
-  --color-gold-hover: #E8B452;
-  --color-gold-light: #F7E7C4;
-  --color-olive: #66724A;
-  --color-soft-brown: #8A5A3B;
-  --color-pure-veg: #16A34A;
+  /* Luxury Hospitality Palette */
+  --color-espresso: #17120F;
+  --color-warm-brown: #3A2920;
+  --color-champagne: #C9A45C;
+  --color-champagne-light: #D8B772;
+  --color-cream: #F3EBDD;
+  --color-beige-subtle: #D1C2B0;
+  --color-pure-veg: #2E8B57;
 
-  --color-background: #0D0D0D;
-  --color-foreground: #F5F0E6;
-  --color-card: #171411;
-  --color-card-foreground: #F5F0E6;
-  --color-primary: #D9A441;
-  --color-primary-foreground: #0D0D0D;
-  --color-secondary: #201C18;
-  --color-secondary-foreground: #F5F0E6;
-  --color-muted: #28231E;
-  --color-muted-foreground: #A89E92;
-  --color-border: #332B23;
-  --color-ring: #D9A441;
+  --color-background: #17120F;
+  --color-foreground: #F3EBDD;
+  --color-card: #201814;
+  --color-card-foreground: #F3EBDD;
+  --color-primary: #C9A45C;
+  --color-primary-foreground: #17120F;
+  --color-secondary: #3A2920;
+  --color-secondary-foreground: #F3EBDD;
+  --color-muted: #281F1A;
+  --color-muted-foreground: #D1C2B0;
+  --color-border: #3A2920;
+  --color-ring: #C9A45C;
 
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -44,26 +41,69 @@
 @layer base {
   * {
     box-sizing: border-box;
-    border-color: #332B23;
+    border-color: #3A2920;
   }
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
-    background-color: #0D0D0D;
-    color: #F5F0E6;
+    background-color: #17120F;
+    color: #F3EBDD;
     font-family: var(--font-sans);
   }
   body {
     margin: 0;
-    background-color: #0D0D0D;
-    color: #F5F0E6;
+    background-color: #17120F;
+    color: #F3EBDD;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
   ::selection {
-    background: #D9A441;
-    color: #0D0D0D;
+    background: #C9A45C;
+    color: #17120F;
   }
+}
+
+/* Subtle Film Grain Overlay */
+.film-grain {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99;
+  opacity: 0.026;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+/* Elegant Champagne Gold Scroll Indicator */
+.champagne-scroll-spine {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 50;
+  background: rgba(58, 41, 32, 0.4);
+}
+.champagne-scroll-progress {
+  width: 100%;
+  background: linear-gradient(180deg, #D8B772 0%, #C9A45C 100%);
+  box-shadow: 0 0 10px rgba(201, 164, 92, 0.6), 0 0 20px rgba(201, 164, 92, 0.25);
+  transition: height 0.1s ease-out;
+}
+
+/* Ambient Champagne Light Sweep */
+.champagne-light-sweep {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(201, 164, 92, 0.14) 0%, rgba(58, 41, 32, 0.08) 50%, transparent 75%);
+  filter: blur(120px);
+  will-change: transform, opacity;
 }
 
 /* Custom Typography Helpers */
@@ -87,20 +127,21 @@
   font-family: "Caveat", cursive;
 }
 
-/* Custom Scrollbar */
+/* Custom Luxury Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #0D0D0D;
+  background: #17120F;
 }
 ::-webkit-scrollbar-thumb {
-  background: #332B23;
+  background: #3A2920;
   border-radius: 4px;
+  border: 1px solid rgba(201, 164, 92, 0.15);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #D9A441;
+  background: #C9A45C;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -111,60 +152,62 @@
   scrollbar-width: none;
 }
 
-/* Headlight Glow and Truck Ambience */
+/* Champagne Ambient Accents */
 .headlight-glow {
-  background: radial-gradient(circle, rgba(217, 164, 65, 0.45) 0%, rgba(217, 164, 65, 0.12) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(201, 164, 92, 0.35) 0%, rgba(58, 41, 32, 0.1) 45%, transparent 70%);
 }
 
 .truck-led-border {
-  box-shadow: 0 0 15px rgba(217, 164, 65, 0.35), inset 0 0 15px rgba(217, 164, 65, 0.2);
+  box-shadow: 0 0 15px rgba(201, 164, 92, 0.25), inset 0 0 15px rgba(201, 164, 92, 0.12);
 }
 
 .gold-glow {
-  filter: drop-shadow(0 0 16px rgba(217, 164, 65, 0.45));
+  filter: drop-shadow(0 0 14px rgba(201, 164, 92, 0.38));
 }
 
 .gold-glow-subtle {
-  filter: drop-shadow(0 0 8px rgba(217, 164, 65, 0.25));
+  filter: drop-shadow(0 0 8px rgba(201, 164, 92, 0.2));
 }
 
-/* Interactive Food Cards */
+/* Interactive Food Cards with Luxury Depth */
 .food-card {
-  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms ease;
+  transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 350ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms ease;
   will-change: transform;
+  border: 1px solid #3A2920;
+  background: #201814;
 }
 .food-card:hover {
-  transform: translateY(-6px);
-  border-color: #D9A441;
-  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(217, 164, 65, 0.15);
+  transform: translateY(-5px);
+  border-color: #C9A45C;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(201, 164, 92, 0.14);
 }
 .food-card img {
-  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .food-card:hover img {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
-/* Radar Ping for Truck Hotspots */
+/* Subtle Radar Ping for Hotspots */
 @keyframes radar-ping {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(217, 164, 65, 0.8);
+    box-shadow: 0 0 0 0 rgba(201, 164, 92, 0.7);
   }
   70% {
-    transform: scale(1.2);
-    box-shadow: 0 0 0 14px rgba(217, 164, 65, 0);
+    transform: scale(1.18);
+    box-shadow: 0 0 0 12px rgba(201, 164, 92, 0);
   }
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(217, 164, 65, 0);
+    box-shadow: 0 0 0 0 rgba(201, 164, 92, 0);
   }
 }
 .hotspot-ping {
-  animation: radar-ping 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  animation: radar-ping 2.4s infinite cubic-bezier(0.4, 0, 0.6, 1);
 }
 
-/* Road Line Animation for Highway Route */
+/* Luxury Highway Line */
 @keyframes highway-dash {
   to {
     stroke-dashoffset: -100;
@@ -172,22 +215,35 @@
 }
 .highway-line {
   stroke-dasharray: 8 6;
-  animation: highway-dash 12s linear infinite;
+  animation: highway-dash 14s linear infinite;
 }
 
 /* Glassmorphism Styles */
 .glass-panel {
-  background: rgba(23, 20, 17, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(217, 164, 65, 0.2);
+  background: rgba(32, 24, 20, 0.84);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(201, 164, 92, 0.18);
 }
 
 .glass-nav {
-  background: rgba(13, 13, 13, 0.88);
+  background: rgba(23, 18, 15, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(217, 164, 65, 0.15);
+  border-bottom: 1px solid rgba(201, 164, 92, 0.14);
+}
+
+/* Subtle Blur-to-Sharp Section Transition Utility */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(16px) scale(0.985);
+  filter: blur(4px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
 }
 
 /* Reduced motion accessibility */
@@ -199,5 +255,8 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .film-grain {
+    display: none;
   }
 }

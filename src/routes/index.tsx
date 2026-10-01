@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { OrderProvider } from "@/components/food-truck/OrderContext";
-import { CinematicLoader } from "@/components/food-truck/CinematicLoader";
 import { Navbar } from "@/components/food-truck/Navbar";
-import { Hero } from "@/components/food-truck/Hero";
+import { GlyphHero } from "@/components/food-truck/GlyphHero";
+import { LuxuryScrollEnhancements } from "@/components/food-truck/LuxuryScrollEnhancements";
 import { TruckScrollJourney } from "@/components/food-truck/TruckScrollJourney";
 import { BrandStory } from "@/components/food-truck/BrandStory";
 import { FromTheTruck } from "@/components/food-truck/FromTheTruck";
@@ -71,49 +71,71 @@ export const Route = createFileRoute("/")({
 function FoodTruckApp() {
   return (
     <OrderProvider>
-      {/* Short cinematic loading experience */}
-      <CinematicLoader />
+      {/* Luxury Cinematic Enhancements: Subtle film grain, champagne scroll spine & ambient light sweep */}
+      <LuxuryScrollEnhancements />
 
       {/* Sticky navigation */}
       <Navbar />
 
       {/* Main page content sections */}
-      <main className="min-h-screen bg-[#0D0D0D] text-[#F5F0E6]">
-        {/* 1. Hero: Truck is the Main Character */}
-        <Hero />
+      <main className="min-h-screen bg-[#17120F] text-[#F3EBDD] relative">
+        {/* 1. Main Home: Full Scroll-Animated Glyph Portal Hero (Preserved Exactly) */}
+        <GlyphHero />
 
         {/* 2. Innovative Truck Scroll Journey */}
-        <TruckScrollJourney />
+        <div className="section-reveal">
+          <TruckScrollJourney />
+        </div>
 
         {/* 3. Brand Story: More Than Just Food */}
-        <BrandStory />
+        <div className="section-reveal">
+          <BrandStory />
+        </div>
 
         {/* 4. Interactive "From The Truck" Section */}
-        <FromTheTruck />
+        <div className="section-reveal">
+          <FromTheTruck />
+        </div>
 
         {/* 5. What's Your Craving? Interactive Selector */}
-        <CravingSelector />
+        <div className="section-reveal">
+          <CravingSelector />
+        </div>
 
         {/* 6. Signature Menu & Interactive Food Cards */}
-        <SignatureMenu />
+        <div className="section-reveal">
+          <SignatureMenu />
+        </div>
 
         {/* 7. Experience Points: Good Food. Good Vibes. */}
-        <ExperiencePoints />
+        <div className="section-reveal">
+          <ExperiencePoints />
+        </div>
 
         {/* 8. Editorial Food & Truck Gallery */}
-        <FoodGallery />
+        <div className="section-reveal">
+          <FoodGallery />
+        </div>
 
         {/* 9. Where's The Truck? Stylized Route Map */}
-        <FindTheTruck />
+        <div className="section-reveal">
+          <FindTheTruck />
+        </div>
 
         {/* 10. Good Food. Good Vibes. Full-Width Section */}
-        <GoodFoodGoodVibes />
+        <div className="section-reveal">
+          <GoodFoodGoodVibes />
+        </div>
 
         {/* 11. Order CTA Banner */}
-        <OrderCTA />
+        <div className="section-reveal">
+          <OrderCTA />
+        </div>
 
         {/* 12. Contact & Location Information */}
-        <ContactSection />
+        <div className="section-reveal">
+          <ContactSection />
+        </div>
       </main>
 
       {/* Footer */}

@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckCircle2, Flame, HeartHandshake, Leaf, Smile, Sparkles, Utensils } from "lucide-react";
+import { CheckCircle2, Flame, HeartHandshake, Leaf, Smile, Sparkles } from "lucide-react";
 
 export function ExperiencePoints() {
   const points = [
@@ -34,27 +34,27 @@ export function ExperiencePoints() {
   ];
 
   return (
-    <section className="relative bg-[#0D0D0D] text-[#F5F0E6] py-20 lg:py-28 overflow-hidden">
-      {/* Background Subtle Headlight Glow */}
+    <section className="relative bg-[#17120F] text-[#F3EBDD] py-20 lg:py-28 overflow-hidden border-t border-[#3A2920]">
+      {/* Background Subtle Champagne Ambient Glow */}
       <div
         className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[350px] rounded-full pointer-events-none opacity-10 blur-[130px]"
         style={{
-          background: "radial-gradient(circle, #D9A441 0%, #66724A 50%, transparent 75%)",
+          background: "radial-gradient(circle, #C9A45C 0%, #3A2920 50%, transparent 75%)",
         }}
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[#D9A441]">
-            <HeartHandshake className="size-3.5 text-[#D9A441]" />
+          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[#C9A45C]">
+            <HeartHandshake className="size-3.5 text-[#C9A45C]" />
             THE FOOD TRUCK EXPERIENCE
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-[#F5F0E6] mt-3">
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-[#F3EBDD] mt-3">
             GOOD FOOD. <br className="sm:hidden" />
-            <span className="text-[#D9A441]">GOOD VIBES.</span>
+            <span className="text-[#C9A45C]">GOOD VIBES.</span>
           </h2>
-          <p className="text-sm sm:text-base text-[#A89E92] mt-3">
+          <p className="text-sm sm:text-base text-[#D1C2B0] mt-3">
             Why road-trippers, foodies, and highway travelers make Ghumans their favorite stop on the GT Road.
           </p>
         </div>
@@ -66,31 +66,31 @@ export function ExperiencePoints() {
             return (
               <div
                 key={pt.title}
-                className="group p-6 sm:p-7 rounded-2xl bg-[#171411] border border-[#332B23] hover:border-[#D9A441] transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(0,0,0,0.8)]"
+                className="group p-6 sm:p-7 rounded-2xl bg-[#201814] border border-[#3A2920] hover:border-[#C9A45C] transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(23,18,15,0.85)]"
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="font-display font-black text-2xl text-[#D9A441]/50 group-hover:text-[#D9A441] transition-colors">
+                    <span className="font-display font-black text-2xl text-[#C9A45C]/50 group-hover:text-[#C9A45C] transition-colors">
                       {pt.number}
                     </span>
-                    <div className="size-10 rounded-xl bg-[#201C18] border border-[#332B23] flex items-center justify-center text-[#D9A441] group-hover:scale-110 group-hover:border-[#D9A441] transition-all">
+                    <div className="size-10 rounded-xl bg-[#281F1A] border border-[#3A2920] flex items-center justify-center text-[#C9A45C] group-hover:scale-110 group-hover:border-[#C9A45C] transition-all">
                       <Icon className="size-5" />
                     </div>
                   </div>
 
-                  <h3 className="font-display font-black text-xl text-[#F5F0E6] mt-6 tracking-wide group-hover:text-[#D9A441] transition-colors">
+                  <h3 className="font-display font-black text-xl text-[#F3EBDD] mt-6 tracking-wide group-hover:text-[#C9A45C] transition-colors">
                     {pt.title}
                   </h3>
-                  <p className="text-xs font-semibold text-[#D9A441] mt-1 font-script text-base">
+                  <p className="text-xs font-semibold text-[#C9A45C] mt-1 font-script text-base">
                     {pt.subtitle}
                   </p>
-                  <p className="text-xs sm:text-sm text-[#A89E92] mt-3 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#D1C2B0] mt-3 leading-relaxed">
                     {pt.description}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#332B23]/50 flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest text-[#D9A441]">
-                  <CheckCircle2 className="size-3.5 text-[#16A34A]" />
+                <div className="mt-6 pt-4 border-t border-[#3A2920]/60 flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest text-[#C9A45C]">
+                  <CheckCircle2 className="size-3.5 text-[#2E8B57]" />
                   <span>The Ghumans Standard</span>
                 </div>
               </div>
