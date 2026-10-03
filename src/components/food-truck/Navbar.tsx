@@ -142,17 +142,17 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => openDriveThru()}
-              className="inline-flex items-center gap-1.5 sm:gap-2 rounded-lg bg-[#7F1D1D] hover:bg-[#991B1B] border border-[#F59E0B]/50 px-2.5 sm:px-4 py-2 sm:py-2.5 text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#FFFDF8] shadow-sm hover:brightness-105 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="group whitespace-nowrap inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] border border-[#E8C88B]/60 hover:border-[#F3EBDD] px-3.5 sm:px-4.5 py-2 sm:py-2.5 text-xs font-black uppercase tracking-wider text-[#FFFDF8] shadow-[0_2px_14px_rgba(139,0,0,0.5)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.6)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              <Car className="size-3.5 text-[#F59E0B]" />
-              <span>DRIVE-THRU</span>
+              <span className="text-sm group-hover:scale-110 transition-transform">🚗</span>
+              <span className="tracking-wide">DRIVE-THRU</span>
             </button>
 
             {/* Order Now CTA */}
             <button
               type="button"
               onClick={() => openOrderDrawer()}
-              className="relative inline-flex items-center gap-1.5 sm:gap-2 rounded-lg bg-gradient-to-r from-[#D4AF67] via-[#E8C88B] to-[#C9A45C] px-3 sm:px-5 py-2 sm:py-2.5 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#1C1815] shadow-sm hover:brightness-105 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="whitespace-nowrap inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF67] via-[#E8C88B] to-[#C9A45C] hover:brightness-105 border border-[#F3EBDD]/40 px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs font-black uppercase tracking-wider text-[#1C1815] shadow-[0_2px_14px_rgba(212,175,103,0.35)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
               <ShoppingBag className="size-3.5 text-[#1C1815]" />
               <span>ORDER NOW</span>
@@ -241,10 +241,10 @@ export function Navbar() {
                 setMobileOpen(false);
                 openDriveThru();
               }}
-              className="w-full flex items-center justify-center gap-2 rounded bg-[#7F1D1D] hover:bg-[#991B1B] border border-[#F59E0B]/50 py-3 text-sm font-black uppercase tracking-wider text-[#FFFDF8] shadow-md"
+              className="w-full flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] border border-[#E8C88B]/70 py-3.5 text-sm font-black uppercase tracking-wider text-[#FFFDF8] shadow-lg active:scale-95 transition-all"
             >
-              <Car className="size-4 text-[#F59E0B]" />
-              <span>🚗 Drive-Thru Order Ahead</span>
+              <span className="text-base">🚗</span>
+              <span>DRIVE-THRU ORDER AHEAD</span>
             </button>
 
             <button

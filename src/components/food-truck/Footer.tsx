@@ -148,10 +148,10 @@ export function Footer() {
                 <button
                   type="button"
                   onClick={() => openDriveThru()}
-                  className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-[#DC2626] to-[#991B1B] hover:from-[#EF4444] hover:to-[#B91C1C] text-white text-[11px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 border border-red-500/40"
+                  className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 border border-[#E8C88B]/60"
                 >
-                  <span>🚗</span>
-                  <span>ORDER DRIVE-THRU</span>
+                  <span className="text-sm">🚗</span>
+                  <span className="tracking-wide">ORDER DRIVE-THRU</span>
                 </button>
               </div>
             </div>

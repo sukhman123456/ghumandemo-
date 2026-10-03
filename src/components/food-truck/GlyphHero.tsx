@@ -481,10 +481,10 @@ export function GlyphHero() {
             <button
               type="button"
               onClick={() => openDriveThru()}
-              className="inline-flex items-center justify-center gap-2 rounded bg-[#7F1D1D] hover:bg-[#991B1B] border border-[#F59E0B]/50 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#FFFDF8] shadow-[0_4px_20px_rgba(127,29,29,0.5)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] border border-[#E8C88B]/70 px-7 py-3.5 text-xs font-black uppercase tracking-wider text-[#FFFDF8] shadow-[0_4px_25px_rgba(139,0,0,0.55)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              <Car className="size-4 text-[#F59E0B]" />
-              <span>DRIVE-THRU</span>
+              <span className="text-base">🚗</span>
+              <span className="tracking-wide">DRIVE-THRU</span>
             </button>
             <a
               href="#journey"

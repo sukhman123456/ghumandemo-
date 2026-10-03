@@ -167,19 +167,19 @@ export function DriveThruModal() {
         {/* Top Header Bar */}
         <div className="p-4 sm:p-5 bg-gradient-to-r from-[#7F1D1D] via-[#5B0C16] to-[#7F1D1D] border-b border-[#C9A45C]/40 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="size-10 rounded-2xl bg-[#F59E0B] text-[#17120F] flex items-center justify-center font-black shadow-md shrink-0">
-              <Car className="size-5" />
+            <div className="size-11 rounded-2xl bg-gradient-to-tr from-[#C9A45C] to-[#E8C88B] text-[#17120F] flex items-center justify-center font-black shadow-lg shrink-0 border border-[#FFFDF8]/40">
+              <span className="text-xl">🚗</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="font-display font-black text-lg sm:text-xl text-[#FFFDF8] tracking-tight uppercase leading-none">
-                  DRIVE-THRU EXPRESS ORDER
+                  DRIVE-THRU EXPRESS
                 </h2>
-                <span className="hidden sm:inline-block px-2 py-0.5 rounded bg-[#16A34A] text-[9px] font-black text-white">
+                <span className="px-2 py-0.5 rounded-md bg-[#16A34A] text-[9px] font-black text-white shadow-sm">
                   100% PURE VEG
                 </span>
               </div>
-              <span className="text-xs text-[#FDE68A] font-semibold mt-0.5 block">
+              <span className="text-xs text-[#FDE68A] font-semibold mt-1 block">
                 Grand Trunk Road, Dhilwan · Order Ahead · Pick Up Hot & Fresh
               </span>
             </div>

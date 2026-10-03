@@ -50,11 +50,11 @@ export function SignatureMenu() {
             <button
               type="button"
               onClick={() => openDriveThru()}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#DC2626] to-[#B91C1C] hover:from-[#EF4444] hover:to-[#DC2626] text-white px-5 py-2.5 text-xs font-black uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(220,38,38,0.4)] active:scale-95 group"
+              className="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] text-white px-5 py-2.5 text-xs font-black uppercase tracking-wider transition-all shadow-[0_2px_15px_rgba(139,0,0,0.5)] border border-[#E8C88B]/70 active:scale-95 group"
             >
-              <span className="text-base group-hover:scale-110 transition-transform">🚗</span>
-              <span>DRIVE-THRU</span>
-              <span className="bg-yellow-400 text-black text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-normal">Pick Up Fresh</span>
+              <span className="text-sm group-hover:scale-110 transition-transform">🚗</span>
+              <span className="tracking-wide">DRIVE-THRU</span>
+              <span className="bg-[#E8C88B] text-[#17120F] text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-normal">Order Ahead</span>
             </button>
 
             <button
@@ -372,9 +372,9 @@ function FoodItemCard({ item }: { item: MenuItem }) {
             <button
               type="button"
               onClick={() => openDriveThru(item)}
-              className="w-full py-1.5 rounded-lg font-bold text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 bg-[#DC2626]/20 hover:bg-[#DC2626] text-[#FFA8A8] hover:text-white border border-[#DC2626]/40 transition-all"
+              className="w-full py-1.5 rounded-lg font-bold text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 bg-[#8B0000]/30 hover:bg-[#8B0000] text-[#FFFDF8] border border-[#E8C88B]/40 transition-all"
             >
-              <span>🚗</span> Order via Drive-Thru (Pick Up Fresh)
+              <span>🚗</span> Order via Drive-Thru
             </button>
           </>
         ) : (
@@ -404,7 +404,7 @@ function FoodItemCard({ item }: { item: MenuItem }) {
             <button
               type="button"
               onClick={() => openDriveThru(item)}
-              className="w-full py-2.5 rounded-xl font-black text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95 bg-gradient-to-r from-[#DC2626] to-[#991B1B] hover:from-[#EF4444] hover:to-[#B91C1C] text-white border border-red-500/40"
+              className="w-full py-2.5 rounded-xl font-black text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95 bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] text-white border border-[#E8C88B]/50"
               title="Order this item via Drive-Thru"
             >
               <span>🚗</span>
