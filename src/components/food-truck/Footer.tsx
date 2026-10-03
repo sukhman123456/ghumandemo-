@@ -1,7 +1,9 @@
 import React from "react";
 import { ArrowUp, Facebook, Heart, Instagram, MessageCircle, Phone, Sparkles, UtensilsCrossed } from "lucide-react";
+import { useOrder } from "./OrderContext";
 
 export function Footer() {
+  const { openDriveThru } = useOrder();
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -141,6 +143,17 @@ export function Footer() {
               >
                 Call: 095012 01215
               </a>
+
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={() => openDriveThru()}
+                  className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-[#DC2626] to-[#991B1B] hover:from-[#EF4444] hover:to-[#B91C1C] text-white text-[11px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 border border-red-500/40"
+                >
+                  <span>🚗</span>
+                  <span>ORDER DRIVE-THRU</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

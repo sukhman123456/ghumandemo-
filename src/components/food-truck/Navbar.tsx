@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu as MenuIcon, Phone, ShoppingBag, UtensilsCrossed, X, Sparkles, MapPin } from "lucide-react";
+import { Menu as MenuIcon, Phone, ShoppingBag, UtensilsCrossed, X, Sparkles, MapPin, Car } from "lucide-react";
 import { useOrder } from "./OrderContext";
 
 const navLinks = [
@@ -17,7 +17,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const { openOrderDrawer, totalCount } = useOrder();
+  const { openOrderDrawer, openDriveThru, totalCount } = useOrder();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -138,6 +138,16 @@ export function Navbar() {
               <span>095012 01215</span>
             </a>
 
+            {/* Drive-Thru CTA */}
+            <button
+              type="button"
+              onClick={() => openDriveThru()}
+              className="inline-flex items-center gap-1.5 sm:gap-2 rounded-lg bg-[#7F1D1D] hover:bg-[#991B1B] border border-[#F59E0B]/50 px-2.5 sm:px-4 py-2 sm:py-2.5 text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#FFFDF8] shadow-sm hover:brightness-105 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+            >
+              <Car className="size-3.5 text-[#F59E0B]" />
+              <span>DRIVE-THRU</span>
+            </button>
+
             {/* Order Now CTA */}
             <button
               type="button"
@@ -225,6 +235,18 @@ export function Navbar() {
 
           {/* Mobile Footer CTAs */}
           <div className="pt-6 border-t border-[#3A2920] space-y-3">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                openDriveThru();
+              }}
+              className="w-full flex items-center justify-center gap-2 rounded bg-[#7F1D1D] hover:bg-[#991B1B] border border-[#F59E0B]/50 py-3 text-sm font-black uppercase tracking-wider text-[#FFFDF8] shadow-md"
+            >
+              <Car className="size-4 text-[#F59E0B]" />
+              <span>🚗 Drive-Thru Order Ahead</span>
+            </button>
+
             <button
               type="button"
               onClick={() => {

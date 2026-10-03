@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ArrowRight, MapPin, Phone, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowRight, MapPin, Phone, ShoppingBag, Sparkles, Car } from "lucide-react";
 import GlyphPortal from "@/components/ui/glyph-portal";
 import { useOrder } from "./OrderContext";
 
 const family = '"Playfair Display", Georgia, serif';
 
 export function GlyphHero() {
-  const { openOrderDrawer } = useOrder();
+  const { openOrderDrawer, openDriveThru } = useOrder();
   const [face, setFace] = useState<string>('"Playfair Display", Georgia, serif');
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -477,6 +477,14 @@ export function GlyphHero() {
             >
               <ShoppingBag className="size-4" />
               <span>ORDER NOW</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => openDriveThru()}
+              className="inline-flex items-center justify-center gap-2 rounded bg-[#7F1D1D] hover:bg-[#991B1B] border border-[#F59E0B]/50 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#FFFDF8] shadow-[0_4px_20px_rgba(127,29,29,0.5)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+            >
+              <Car className="size-4 text-[#F59E0B]" />
+              <span>DRIVE-THRU</span>
             </button>
             <a
               href="#journey"

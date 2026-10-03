@@ -17,6 +17,7 @@ import { GoodFoodGoodVibes } from "@/components/food-truck/GoodFoodGoodVibes";
 import { FloatingActions } from "@/components/food-truck/FloatingActions";
 import { Footer } from "@/components/food-truck/Footer";
 import { OrderDrawer } from "@/components/food-truck/OrderDrawer";
+import { DriveThruModal } from "@/components/food-truck/DriveThruModal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -143,6 +144,9 @@ function FoodTruckApp() {
 
       {/* Interactive Order Drawer & Cart */}
       <OrderDrawer />
+
+      {/* Dedicated Drive-Thru Ordering System Modal */}
+      <DriveThruModal />
 
       {/* Floating Actions: WhatsApp & Order Buttons */}
       <FloatingActions />

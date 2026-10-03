@@ -6,7 +6,7 @@ import { useOrder } from "./OrderContext";
 export function SignatureMenu() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const { order, addToOrder, updateQuantity, removeFromOrder, openOrderDrawer, totalCount } = useOrder();
+  const { order, addToOrder, updateQuantity, removeFromOrder, openOrderDrawer, totalCount, openDriveThru } = useOrder();
 
   const filteredItems = useMemo(() => {
     return MENU_ITEMS.filter((item) => {
@@ -45,15 +45,25 @@ export function SignatureMenu() {
             </p>
           </div>
 
-          {/* Quick Cart / Order View */}
-          <div className="flex items-center gap-3">
+          {/* Quick Order CTAs: Drive-Thru & Order Tray */}
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => openDriveThru()}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#DC2626] to-[#B91C1C] hover:from-[#EF4444] hover:to-[#DC2626] text-white px-5 py-2.5 text-xs font-black uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(220,38,38,0.4)] active:scale-95 group"
+            >
+              <span className="text-base group-hover:scale-110 transition-transform">🚗</span>
+              <span>DRIVE-THRU</span>
+              <span className="bg-yellow-400 text-black text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-normal">50% Advance</span>
+            </button>
+
             <button
               type="button"
               onClick={() => openOrderDrawer()}
               className="inline-flex items-center gap-2.5 rounded-full bg-[#201814] border border-[#C9A45C]/50 hover:border-[#C9A45C] text-[#F3EBDD] hover:text-[#C9A45C] px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all shadow-md active:scale-95 group"
             >
               <ShoppingBag className="size-4 text-[#C9A45C] group-hover:scale-110 transition-transform" />
-              <span>View Order Cart</span>
+              <span>View Tray</span>
               {totalCount > 0 && (
                 <span className="bg-[#C9A45C] text-[#17120F] text-[10px] font-black px-2 py-0.5 rounded-full">
                   {totalCount}
@@ -193,7 +203,7 @@ export function SignatureMenu() {
 }
 
 function FoodItemCard({ item }: { item: MenuItem }) {
-  const { order, addToOrder, updateQuantity, removeFromOrder } = useOrder();
+  const { order, addToOrder, updateQuantity, removeFromOrder, openDriveThru } = useOrder();
 
   // Size state
   const [selectedSize, setSelectedSize] = useState<SizeOption | undefined>(
@@ -328,58 +338,79 @@ function FoodItemCard({ item }: { item: MenuItem }) {
         </div>
       </div>
 
-      {/* Card Action Button / Stepper */}
-      <div className="p-4 sm:p-5 pt-0">
+      {/* Card Action Button / Stepper + Drive-Thru */}
+      <div className="p-4 sm:p-5 pt-0 space-y-2">
         {currentQuantity > 0 ? (
-          <div className="flex items-center justify-between bg-[#17120F] rounded-xl p-1 border border-[#C9A45C]">
-            <button
-              onClick={() => {
-                if (currentQuantity <= 1) removeFromOrder(currentCartId);
-                else updateQuantity(currentCartId, -1);
-              }}
-              className="size-8 rounded-lg bg-[#201814] text-[#D1C2B0] hover:text-[#C9A45C] flex items-center justify-center font-bold"
-              aria-label="Decrease quantity"
-            >
-              <Minus className="size-3.5" />
-            </button>
-            <div className="flex flex-col items-center">
-              <span className="text-xs font-bold text-[#F3EBDD] leading-none">
-                {currentQuantity} in Tray
-              </span>
-              <span className="text-[10px] font-black text-[#C9A45C] mt-0.5">
-                ₹{currentPrice * currentQuantity}
-              </span>
+          <>
+            <div className="flex items-center justify-between bg-[#17120F] rounded-xl p-1 border border-[#C9A45C]">
+              <button
+                onClick={() => {
+                  if (currentQuantity <= 1) removeFromOrder(currentCartId);
+                  else updateQuantity(currentCartId, -1);
+                }}
+                className="size-8 rounded-lg bg-[#201814] text-[#D1C2B0] hover:text-[#C9A45C] flex items-center justify-center font-bold"
+                aria-label="Decrease quantity"
+              >
+                <Minus className="size-3.5" />
+              </button>
+              <div className="flex flex-col items-center">
+                <span className="text-xs font-bold text-[#F3EBDD] leading-none">
+                  {currentQuantity} in Tray
+                </span>
+                <span className="text-[10px] font-black text-[#C9A45C] mt-0.5">
+                  ₹{currentPrice * currentQuantity}
+                </span>
+              </div>
+              <button
+                onClick={() => updateQuantity(currentCartId, 1)}
+                className="size-8 rounded-lg bg-[#C9A45C] text-[#17120F] hover:bg-[#D8B772] flex items-center justify-center font-bold"
+                aria-label="Increase quantity"
+              >
+                <Plus className="size-3.5" />
+              </button>
             </div>
             <button
-              onClick={() => updateQuantity(currentCartId, 1)}
-              className="size-8 rounded-lg bg-[#C9A45C] text-[#17120F] hover:bg-[#D8B772] flex items-center justify-center font-bold"
-              aria-label="Increase quantity"
+              type="button"
+              onClick={() => openDriveThru(item)}
+              className="w-full py-1.5 rounded-lg font-bold text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 bg-[#DC2626]/20 hover:bg-[#DC2626] text-[#FFA8A8] hover:text-white border border-[#DC2626]/40 transition-all"
             >
-              <Plus className="size-3.5" />
+              <span>🚗</span> Order via Drive-Thru (50% Advance)
+            </button>
+          </>
+        ) : (
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={handleAdd}
+              className={`w-full py-2.5 rounded-xl font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all shadow-sm active:scale-95 ${
+                justAdded
+                  ? "bg-[#2E8B57] text-white"
+                  : "bg-[#201814] hover:bg-[#C9A45C] text-[#C9A45C] hover:text-[#17120F] border border-[#C9A45C]/50 hover:border-[#C9A45C]"
+              }`}
+            >
+              {justAdded ? (
+                <>
+                  <Check className="size-3.5" />
+                  ADDED!
+                </>
+              ) : (
+                <>
+                  <Plus className="size-3.5 stroke-[2.5]" />
+                  ADD TO CART
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => openDriveThru(item)}
+              className="w-full py-2.5 rounded-xl font-black text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95 bg-gradient-to-r from-[#DC2626] to-[#991B1B] hover:from-[#EF4444] hover:to-[#B91C1C] text-white border border-red-500/40"
+              title="Order this item via Drive-Thru"
+            >
+              <span>🚗</span>
+              <span>DRIVE-THRU</span>
             </button>
           </div>
-        ) : (
-          <button
-            type="button"
-            onClick={handleAdd}
-            className={`w-full py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95 ${
-              justAdded
-                ? "bg-[#2E8B57] text-white"
-                : "bg-[#201814] hover:bg-[#C9A45C] text-[#C9A45C] hover:text-[#17120F] border border-[#C9A45C]/50 hover:border-[#C9A45C]"
-            }`}
-          >
-            {justAdded ? (
-              <>
-                <Check className="size-3.5" />
-                ADDED TO TRAY!
-              </>
-            ) : (
-              <>
-                <Plus className="size-3.5 stroke-[2.5]" />
-                ADD TO TRAY · ₹{currentPrice}
-              </>
-            )}
-          </button>
         )}
       </div>
     </article>
