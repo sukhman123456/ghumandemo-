@@ -64,10 +64,10 @@ export function Footer() {
             {/* Social Icons */}
             <div className="flex items-center gap-3 mt-6">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/ghumanskitchenexpress/"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Instagram"
+                aria-label="Follow @ghumanskitchenexpress on Instagram"
                 className="size-10 rounded-full bg-[#201814] border border-[#3A2920] flex items-center justify-center text-[#F3EBDD] hover:text-[#E1306C] hover:border-[#E1306C] transition-colors"
               >
                 <Instagram className="size-4" />

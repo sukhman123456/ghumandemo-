@@ -4,7 +4,7 @@ import { useOrder } from "./OrderContext";
 
 export function FloatingActions() {
   const { openOrderDrawer, totalCount } = useOrder();
-  const instagramUrl = "https://instagram.com";
+  const instagramUrl = "https://www.instagram.com/ghumanskitchenexpress/";
   const whatsappUrl =
     "https://wa.me/919501201215?text=" +
     encodeURIComponent("Hello Ghumans Kitchen Express! I'd like to place an order from your food truck.");

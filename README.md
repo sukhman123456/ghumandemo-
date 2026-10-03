@@ -24,7 +24,7 @@
 
 - **Phone Call**: [095012 01215](tel:+919501201215)
 - **WhatsApp Instant Orders**: [Chat on WhatsApp](https://wa.me/919501201215?text=Hello%20Ghumans%20Kitchen%20Express!%20I%20would%20like%20to%20place%20an%20order.)
-- **Instagram**: [Follow @ Ghumans Kitchen Express](https://instagram.com)
+- **Instagram**: [Follow @ghumanskitchenexpress](https://www.instagram.com/ghumanskitchenexpress/)
 - **GPS Navigation**: [Google Maps Route to Dhilwan Toll Plaza](https://www.google.com/maps/search/?api=1&query=Ghumans%20Kitchen%20Express%20Dhilwan%20Punjab%20144804)
 
 ---

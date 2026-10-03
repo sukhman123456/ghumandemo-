@@ -175,9 +175,10 @@ export function ContactSection() {
 
               {/* Instagram Button */}
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/ghumanskitchenexpress/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Follow @ghumanskitchenexpress on Instagram"
                 className="flex items-center justify-between p-4 rounded-xl bg-[#17120F] border border-[#3A2920] hover:border-[#E1306C] transition-all group"
               >
                 <div className="flex items-center gap-3.5">
@@ -186,7 +187,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <span className="text-sm font-bold text-[#F3EBDD] block">Instagram</span>
-                    <span className="text-xs text-[#D1C2B0]">Follow the Food Truck Journey</span>
+                    <span className="text-xs text-[#D1C2B0]">@ghumanskitchenexpress</span>
                   </div>
                 </div>
                 <span className="text-xs font-bold text-[#E1306C] uppercase tracking-wider group-hover:translate-x-1 transition-transform">
