@@ -3,7 +3,7 @@ import { Instagram, MessageCircle, Phone, ShoppingBag } from "lucide-react";
 import { useOrder } from "./OrderContext";
 
 export function FloatingActions() {
-  const { openOrderDrawer, totalCount, openDriveThru, driveThruTotalCount } = useOrder();
+  const { openOrderDrawer, totalCount } = useOrder();
   const instagramUrl = "https://www.instagram.com/ghumanskitchenexpress/";
   const whatsappUrl =
     "https://wa.me/917707813600?text=" +
@@ -18,29 +18,6 @@ export function FloatingActions() {
         bottom: "max(16px, env(safe-area-inset-bottom, 16px))",
       }}
     >
-      {/* Floating Drive-Thru Action - Prominent */}
-      <button
-        type="button"
-        onClick={() => openDriveThru()}
-        aria-label="Open Drive-Thru Ordering System"
-        className="pointer-events-auto group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#DC2626] via-[#B91C1C] to-[#991B1B] text-white px-4 py-2.5 shadow-[0_4px_25px_rgba(220,38,38,0.5)] hover:shadow-[0_6px_30px_rgba(220,38,38,0.7)] hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-yellow-400 whitespace-nowrap animate-bounce duration-1000"
-      >
-        <span className="text-base group-hover:scale-110 transition-transform">🚗</span>
-        <div className="flex flex-col items-start text-left leading-tight">
-          <span className="text-xs font-black tracking-wider uppercase text-yellow-300">
-            DRIVE-THRU
-          </span>
-          <span className="text-[9px] font-bold text-white/90">
-            Order Ahead · Pick Up
-          </span>
-        </div>
-        {driveThruTotalCount > 0 && (
-          <span className="inline-flex size-5 items-center justify-center rounded-full bg-yellow-400 text-[10px] font-black text-black ml-1 shadow">
-            {driveThruTotalCount}
-          </span>
-        )}
-      </button>
-
       {/* Floating Instagram Action */}
       <a
         href={instagramUrl}
