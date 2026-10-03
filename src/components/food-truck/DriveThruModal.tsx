@@ -29,7 +29,7 @@ import {
 } from "./OrderContext";
 import { MENU_CATEGORIES, MENU_ITEMS, MenuItem, SizeOption } from "./menuData";
 
-type DriveThruStep = "welcome" | "menu" | "cart" | "confirmed";
+type DriveThruStep = "menu" | "cart" | "confirmed";
 
 const AVAILABLE_ADDONS: AddonOption[] = [
   { name: "Extra Melted Cheese", price: 30 },
@@ -57,7 +57,8 @@ export function DriveThruModal() {
     getDriveThruWhatsAppUrl,
   } = useOrder();
 
-  const [step, setStep] = useState<DriveThruStep>("welcome");
+  // Directly start on the full menu so all dishes are instantly visible
+  const [step, setStep] = useState<DriveThruStep>("menu");
 
   // Menu step state
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -73,7 +74,7 @@ export function DriveThruModal() {
     name: "",
     phone: "",
     pickupDate: "Today",
-    pickupTime: "In 20-30 Mins",
+    pickupTime: "In 15-20 Mins",
     vehicleType: "Car",
     vehicleNumber: "",
     instructions: "",
@@ -81,13 +82,6 @@ export function DriveThruModal() {
 
   const [formError, setFormError] = useState("");
   const [generatedOrderNo, setGeneratedOrderNo] = useState("");
-
-  // When opening, if items already exist, start at menu or welcome
-  React.useEffect(() => {
-    if (isDriveThruOpen && driveThruOrder.length > 0 && step === "welcome") {
-      setStep("menu");
-    }
-  }, [isDriveThruOpen]);
 
   // Filter items
   const filteredItems = useMemo(() => {
@@ -102,12 +96,35 @@ export function DriveThruModal() {
     });
   }, [activeCategory, searchQuery]);
 
+  // Categories to render for grouped section view
+  const categoriesToRender = useMemo(() => {
+    if (activeCategory !== "all") {
+      return MENU_CATEGORIES.filter((c) => c.id === activeCategory);
+    }
+    return MENU_CATEGORIES.filter((c) => c.id !== "all");
+  }, [activeCategory]);
+
   if (!isDriveThruOpen) return null;
+
+  // Quantity of item currently in cart
+  const getItemCartQuantity = (itemId: string) => {
+    return driveThruOrder
+      .filter((entry) => entry.item.id === itemId)
+      .reduce((sum, entry) => sum + entry.quantity, 0);
+  };
 
   const handleOpenCustomize = (item: MenuItem) => {
     setCustomizingItem(item);
     setItemSelectedSize(item.sizes && item.sizes.length > 0 ? item.sizes[0] : undefined);
     setItemSelectedAddons([]);
+  };
+
+  const handleQuickAdd = (item: MenuItem) => {
+    if (item.sizes && item.sizes.length > 0) {
+      handleOpenCustomize(item);
+    } else {
+      addToDriveThru(item);
+    }
   };
 
   const handleAddCustomizedToCart = () => {
@@ -157,54 +174,194 @@ export function DriveThruModal() {
     setStep("confirmed");
   };
 
+  // Render a dish card
+  const renderItemCard = (item: MenuItem) => {
+    const qtyInCart = getItemCartQuantity(item.id);
+    const cartEntriesForItem = driveThruOrder.filter((e) => e.item.id === item.id);
+
+    return (
+      <div
+        key={item.id}
+        className="p-3 sm:p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920] hover:border-[#C9A45C]/60 flex flex-col justify-between transition-all group shadow-sm hover:shadow-[0_4px_15px_rgba(0,0,0,0.4)]"
+      >
+        <div className="flex gap-3">
+          <div className="relative size-20 sm:size-22 rounded-xl overflow-hidden bg-[#17120F] shrink-0 border border-[#3A2920]">
+            <img
+              src={item.image}
+              alt={item.name}
+              className="size-full object-cover group-hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                if (item.fallbackImage) e.currentTarget.src = item.fallbackImage;
+              }}
+            />
+            <span
+              className="absolute top-1.5 left-1.5 size-2 rounded-full bg-[#16A34A] border border-white shadow-sm"
+              title="100% Pure Vegetarian"
+            />
+            {item.tag && (
+              <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-[#8B0000] text-[#FFFDF8] text-[8px] font-black uppercase tracking-wider">
+                {item.tag}
+              </span>
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {item.code && (
+                <span className="text-[9px] font-black text-[#C9A45C] bg-[#17120F] px-1.5 py-0.5 rounded border border-[#C9A45C]/40">
+                  {item.code}
+                </span>
+              )}
+              <h4 className="font-bold text-xs sm:text-sm text-[#F3EBDD] truncate group-hover:text-[#C9A45C] transition-colors">
+                {item.name}
+              </h4>
+            </div>
+
+            <p className="text-[10px] sm:text-[11px] text-[#D1C2B0]/80 line-clamp-2 mt-1 leading-relaxed">
+              {item.description}
+            </p>
+
+            <div className="mt-1.5 flex items-center justify-between">
+              <span className="text-xs sm:text-sm font-black text-[#C9A45C]">
+                {item.sizes && item.sizes.length > 0
+                  ? `From ₹${item.sizes[0].price}`
+                  : `₹${item.price}`}
+              </span>
+
+              {item.sizes && item.sizes.length > 0 && (
+                <span className="text-[9px] text-[#D1C2B0]/70 uppercase font-semibold">
+                  Sizes Available
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Action button: Stepper if in cart or Add/Customize */}
+        <div className="mt-2.5 pt-2 border-t border-[#3A2920]/80 flex items-center justify-between gap-2">
+          {qtyInCart > 0 ? (
+            <div className="w-full flex items-center justify-between bg-[#17120F] rounded-xl p-1 border border-[#C9A45C]/60">
+              <button
+                type="button"
+                onClick={() => {
+                  if (cartEntriesForItem.length > 0) {
+                    updateDriveThruQuantity(cartEntriesForItem[0].id, -1);
+                  }
+                }}
+                className="size-7 rounded-lg bg-[#201814] text-[#D1C2B0] hover:text-[#C9A45C] flex items-center justify-center font-bold"
+                aria-label="Decrease quantity"
+              >
+                <Minus className="size-3" />
+              </button>
+
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-black text-[#FFFDF8]">
+                  {qtyInCart} in Tray
+                </span>
+                {item.sizes && (
+                  <button
+                    type="button"
+                    onClick={() => handleOpenCustomize(item)}
+                    className="text-[9px] text-[#C9A45C] hover:underline font-bold"
+                  >
+                    +Size
+                  </button>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (cartEntriesForItem.length > 0) {
+                    updateDriveThruQuantity(cartEntriesForItem[0].id, 1);
+                  } else {
+                    handleQuickAdd(item);
+                  }
+                }}
+                className="size-7 rounded-lg bg-[#C9A45C] text-[#17120F] hover:bg-[#D8B772] flex items-center justify-center font-bold"
+                aria-label="Increase quantity"
+              >
+                <Plus className="size-3" />
+              </button>
+            </div>
+          ) : (
+            <>
+              <span className="text-[9px] sm:text-[10px] text-[#D1C2B0]/70 truncate">
+                {item.sizes ? "Select Size & Extras" : "Drive-Thru Ready"}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => handleQuickAdd(item)}
+                className="whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg bg-[#C9A45C] hover:bg-[#D8B772] text-[#17120F] font-black text-[10px] sm:text-xs uppercase tracking-wider transition-all shadow-sm active:scale-95 flex items-center gap-1"
+              >
+                <Plus className="size-3 stroke-[2.5]" />
+                <span>{item.sizes ? "CUSTOMIZE" : "ADD TO TRAY"}</span>
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       role="dialog"
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300"
     >
-      <div className="relative w-full max-w-4xl bg-[#17120F] text-[#F3EBDD] rounded-3xl border-2 border-[#C9A45C]/50 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-4xl bg-[#17120F] text-[#F3EBDD] rounded-2xl sm:rounded-3xl border-2 border-[#C9A45C]/50 shadow-2xl overflow-hidden flex flex-col max-h-[94vh]">
         {/* Top Header Bar */}
-        <div className="p-4 sm:p-5 bg-gradient-to-r from-[#7F1D1D] via-[#5B0C16] to-[#7F1D1D] border-b border-[#C9A45C]/40 flex items-center justify-between shrink-0">
+        <div className="p-3.5 sm:p-5 bg-gradient-to-r from-[#7F1D1D] via-[#5B0C16] to-[#7F1D1D] border-b border-[#C9A45C]/40 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="size-11 rounded-2xl bg-gradient-to-tr from-[#C9A45C] to-[#E8C88B] text-[#17120F] flex items-center justify-center font-black shadow-lg shrink-0 border border-[#FFFDF8]/40">
-              <span className="text-xl">🚗</span>
+            <div className="size-10 sm:size-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-[#C9A45C] to-[#E8C88B] text-[#17120F] flex items-center justify-center font-black shadow-lg shrink-0 border border-[#FFFDF8]/40">
+              <span className="text-lg sm:text-xl">🚗</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="font-display font-black text-lg sm:text-xl text-[#FFFDF8] tracking-tight uppercase leading-none">
-                  DRIVE-THRU EXPRESS
+                <h2 className="font-display font-black text-base sm:text-xl text-[#FFFDF8] tracking-tight uppercase leading-none">
+                  DRIVE-THRU MENU & ORDER
                 </h2>
-                <span className="px-2 py-0.5 rounded-md bg-[#16A34A] text-[9px] font-black text-white shadow-sm">
+                <span className="px-1.5 sm:px-2 py-0.5 rounded bg-[#16A34A] text-[8px] sm:text-[9px] font-black text-white shadow-sm">
                   100% PURE VEG
                 </span>
               </div>
-              <span className="text-xs text-[#FDE68A] font-semibold mt-1 block">
+              <span className="text-[10px] sm:text-xs text-[#FDE68A] font-semibold mt-0.5 sm:mt-1 block truncate">
                 Grand Trunk Road, Dhilwan · Order Ahead · Pick Up Hot & Fresh
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            {step !== "welcome" && step !== "confirmed" && (
+            {step === "menu" ? (
               <button
                 type="button"
                 onClick={() => setStep("cart")}
-                className="relative px-3 py-1.5 rounded-full bg-[#201814] border border-[#C9A45C]/50 text-xs font-bold text-[#F3EBDD] hover:text-[#C9A45C] flex items-center gap-1.5"
+                className="relative px-2.5 sm:px-3.5 py-1.5 rounded-full bg-[#201814] border border-[#C9A45C]/60 text-xs font-bold text-[#F3EBDD] hover:text-[#C9A45C] flex items-center gap-1.5 transition-colors"
               >
                 <ShoppingBag className="size-3.5 text-[#C9A45C]" />
-                <span className="hidden sm:inline">Drive-Thru Cart</span>
-                <span className="size-4 rounded-full bg-[#C9A45C] text-[#17120F] text-[10px] font-black flex items-center justify-center">
+                <span className="hidden sm:inline">Drive-Thru Tray</span>
+                <span className="size-4 sm:size-5 rounded-full bg-[#C9A45C] text-[#17120F] text-[9px] sm:text-[10px] font-black flex items-center justify-center">
                   {driveThruTotalCount}
                 </span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setStep("menu")}
+                className="px-2.5 sm:px-3.5 py-1.5 rounded-full bg-[#201814] border border-[#C9A45C]/60 text-xs font-bold text-[#C9A45C] hover:text-white flex items-center gap-1.5 transition-colors"
+              >
+                <ArrowLeft className="size-3.5" />
+                <span>Back to Menu</span>
               </button>
             )}
 
             <button
               type="button"
               onClick={closeDriveThru}
-              className="size-9 rounded-full bg-[#201814] border border-[#3A2920] hover:border-[#C9A45C] text-[#F3EBDD] hover:text-[#C9A45C] flex items-center justify-center transition-colors"
-              aria-label="Close Drive-Thru order"
+              className="size-8 sm:size-9 rounded-full bg-[#201814] border border-[#3A2920] hover:border-[#C9A45C] text-[#F3EBDD] hover:text-[#C9A45C] flex items-center justify-center transition-colors"
+              aria-label="Close Drive-Thru window"
             >
               <X className="size-4" />
             </button>
@@ -212,170 +369,169 @@ export function DriveThruModal() {
         </div>
 
         {/* Modal Body with Multi-Step Flow */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-          {/* STEP 1: WELCOME SCREEN */}
-          {step === "welcome" && (
-            <div className="py-6 sm:py-10 text-center max-w-2xl mx-auto flex flex-col items-center">
-              <div className="size-20 rounded-3xl bg-gradient-to-tr from-[#7F1D1D] to-[#991B1B] border-2 border-[#C9A45C] flex items-center justify-center shadow-xl mb-6">
-                <Car className="size-10 text-[#F59E0B]" />
-              </div>
-
-              <span className="text-xs font-black uppercase text-[#C9A45C] tracking-[0.2em] block mb-2">
-                FAST · CONTACTLESS · CURB PICKUP
-              </span>
-              <h3 className="font-display text-2xl sm:text-4xl font-black text-[#F3EBDD] tracking-tight">
-                Order Ahead & Pick Up Fresh From Our Drive-Thru
-              </h3>
-              <p className="mt-3 text-sm sm:text-base text-[#D1C2B0] max-w-lg leading-relaxed">
-                Choose your food, customize your order with rich extras, select your preferred pickup time and drive in to collect it piping hot.
-              </p>
-
-              {/* 4-Step Process Indicator */}
-              <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 w-full text-left">
-                <div className="p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920]">
-                  <span className="text-[10px] font-black uppercase text-[#C9A45C] block">Step 01</span>
-                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">SELECT FOOD</span>
-                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Select burgers, wraps, pizza & shakes</p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920]">
-                  <span className="text-[10px] font-black uppercase text-[#C9A45C] block">Step 02</span>
-                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">CUSTOMIZE</span>
-                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Pick sizes & add cheese burst or dips</p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920]">
-                  <span className="text-[10px] font-black uppercase text-[#C9A45C] block">Step 03</span>
-                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">VEHICLE DETAILS</span>
-                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Enter vehicle number & pickup time</p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920]">
-                  <span className="text-[10px] font-black uppercase text-[#C9A45C] block">Step 04</span>
-                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">ORDER ON WHATSAPP</span>
-                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Confirm details & payment via WhatsApp</p>
-                </div>
-              </div>
-
-              {/* Start Button */}
-              <button
-                type="button"
-                onClick={() => setStep("menu")}
-                className="mt-8 px-8 py-4 rounded-full bg-[#C9A45C] hover:bg-[#D8B772] text-[#17120F] font-black text-sm uppercase tracking-wider shadow-[0_4px_25px_rgba(201,164,92,0.4)] hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
-              >
-                <span>START DRIVE-THRU ORDER</span>
-                <ArrowRight className="size-4" />
-              </button>
-            </div>
-          )}
-
-          {/* STEP 2: COMPLETE MENU BROWSING & CUSTOMIZATION */}
+        <div className="flex-1 overflow-y-auto p-3.5 sm:p-6">
+          {/* STEP 1: FULL DRIVE-THRU MENU BROWSING & CATEGORIES */}
           {step === "menu" && (
-            <div className="space-y-6">
-              {/* Category tabs & Search */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-3 border-b border-[#3A2920]">
-                {/* Search */}
-                <div className="w-full sm:max-w-xs relative">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-3.5 text-[#D1C2B0]/60" />
-                  <input
-                    type="text"
-                    placeholder="Search menu..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 rounded-xl bg-[#201814] border border-[#3A2920] focus:border-[#C9A45C] text-xs text-[#F3EBDD] outline-none"
-                  />
+            <div className="space-y-5">
+              {/* Drive-Thru Fast Guide Banner */}
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-[#201814] via-[#2A1D17] to-[#201814] border border-[#C9A45C]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-inner">
+                <div className="flex items-center gap-2.5">
+                  <div className="size-8 rounded-lg bg-[#C9A45C]/20 border border-[#C9A45C]/40 flex items-center justify-center text-[#C9A45C] shrink-0">
+                    <Car className="size-4" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-[#FFFDF8] block leading-tight">
+                      Order Ahead for Express Drive-Thru Pickup
+                    </span>
+                    <span className="text-[10px] text-[#D1C2B0] block mt-0.5">
+                      1. Add dishes · 2. Select pickup time & vehicle · 3. Confirm on WhatsApp
+                    </span>
+                  </div>
                 </div>
 
-                {/* View Cart shortcut */}
                 {driveThruTotalCount > 0 && (
                   <button
                     type="button"
                     onClick={() => setStep("cart")}
-                    className="w-full sm:w-auto px-5 py-2 rounded-xl bg-[#7F1D1D] hover:bg-[#991B1B] text-[#FFFDF8] font-bold text-xs flex items-center justify-center gap-2 shadow"
+                    className="w-full sm:w-auto px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#8B0000] to-[#A81B1E] text-[#FFFDF8] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 border border-[#E8C88B]/60 shadow shrink-0"
                   >
-                    <span>Proceed to Cart ({driveThruTotalCount} items)</span>
-                    <ArrowRight className="size-3.5" />
+                    <span>Proceed to Pickup ({driveThruTotalCount})</span>
+                    <ArrowRight className="size-3" />
                   </button>
                 )}
               </div>
 
-              {/* Category Chips */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar">
+              {/* Search Bar */}
+              <div className="relative">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-[#D1C2B0]/60" />
+                <input
+                  type="text"
+                  placeholder="Search burgers, pizzas, wraps, shakes, fries, snacks..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-16 py-2.5 rounded-xl bg-[#201814] border border-[#3A2920] focus:border-[#C9A45C] text-xs text-[#F3EBDD] placeholder:text-[#D1C2B0]/40 outline-none transition-colors"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-[#D1C2B0] hover:text-[#C9A45C] bg-[#3A2920] px-2 py-0.5 rounded-md font-bold"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+
+              {/* Category Pills Navigation */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-1.5 hide-scrollbar">
                 {MENU_CATEGORIES.map((cat) => {
                   const isSelected = activeCategory === cat.id;
+                  const count =
+                    cat.id === "all"
+                      ? MENU_ITEMS.length
+                      : MENU_ITEMS.filter((i) => i.category === cat.id).length;
+
                   return (
                     <button
                       key={cat.id}
                       type="button"
-                      onClick={() => setActiveCategory(cat.id)}
-                      className={`whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${
+                      onClick={() => {
+                        setActiveCategory(cat.id);
+                        if (searchQuery) setSearchQuery("");
+                      }}
+                      className={`whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border shrink-0 ${
                         isSelected
-                          ? "bg-[#C9A45C] text-[#17120F] border-[#C9A45C]"
-                          : "bg-[#201814] text-[#D1C2B0] border-[#3A2920] hover:text-[#F3EBDD]"
+                          ? "bg-[#C9A45C] text-[#17120F] border-[#C9A45C] shadow-sm font-black"
+                          : "bg-[#201814] text-[#D1C2B0] border-[#3A2920] hover:text-[#F3EBDD] hover:border-[#C9A45C]/40"
                       }`}
                     >
                       <span>{cat.icon}</span>
                       <span>{cat.label}</span>
+                      <span
+                        className={`text-[9px] px-1.5 py-0.2 rounded-full font-black ${
+                          isSelected
+                            ? "bg-[#17120F] text-[#C9A45C]"
+                            : "bg-[#17120F] text-[#D1C2B0]/60"
+                        }`}
+                      >
+                        {count}
+                      </span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* Items Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredItems.map((item) => {
-                  return (
-                    <div
-                      key={item.id}
-                      className="p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920] hover:border-[#C9A45C]/60 flex flex-col justify-between transition-all group"
-                    >
-                      <div className="flex gap-3">
-                        <div className="relative size-20 rounded-xl overflow-hidden bg-[#17120F] shrink-0 border border-[#3A2920]">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="size-full object-cover group-hover:scale-105 transition-transform"
-                            onError={(e) => {
-                              if (item.fallbackImage) e.currentTarget.src = item.fallbackImage;
-                            }}
-                          />
-                          <span className="absolute top-1 left-1 size-2 rounded-full bg-[#16A34A] border border-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            {item.code && (
-                              <span className="text-[9px] font-black text-[#C9A45C] bg-[#17120F] px-1 py-0.2 rounded border border-[#C9A45C]/30">
-                                {item.code}
-                              </span>
-                            )}
-                            <h4 className="font-bold text-sm text-[#F3EBDD] truncate">
-                              {item.name}
-                            </h4>
+              {/* Categorized Menu Section or Flat Filtered View */}
+              {filteredItems.length === 0 ? (
+                <div className="py-12 text-center bg-[#201814] rounded-2xl border border-[#3A2920] p-6">
+                  <span className="text-3xl block mb-2">🔍</span>
+                  <h4 className="font-bold text-sm text-[#F3EBDD]">No dishes found</h4>
+                  <p className="text-xs text-[#D1C2B0] mt-1">
+                    No items match "{searchQuery}". Try searching for burger, pizza, wrap, or shake.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setActiveCategory("all");
+                    }}
+                    className="mt-3 px-4 py-1.5 rounded-full bg-[#C9A45C] text-[#17120F] text-xs font-bold"
+                  >
+                    View All Items
+                  </button>
+                </div>
+              ) : activeCategory !== "all" || searchQuery ? (
+                /* Filtered Flat Grid */
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between pb-1 border-b border-[#3A2920]">
+                    <span className="text-xs font-bold text-[#C9A45C] uppercase tracking-wider">
+                      {searchQuery
+                        ? `Search Results for "${searchQuery}" (${filteredItems.length})`
+                        : `${MENU_CATEGORIES.find((c) => c.id === activeCategory)?.label} (${filteredItems.length})`}
+                    </span>
+                    {activeCategory !== "all" && (
+                      <button
+                        type="button"
+                        onClick={() => setActiveCategory("all")}
+                        className="text-[10px] text-[#D1C2B0] hover:text-[#C9A45C] font-semibold"
+                      >
+                        Show All Categories
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                    {filteredItems.map((item) => renderItemCard(item))}
+                  </div>
+                </div>
+              ) : (
+                /* Complete Grouped Categories View - All sections displayed! */
+                <div className="space-y-8">
+                  {categoriesToRender.map((cat) => {
+                    const catItems = MENU_ITEMS.filter((item) => item.category === cat.id);
+                    if (catItems.length === 0) return null;
+
+                    return (
+                      <div key={cat.id} id={`drive-thru-cat-${cat.id}`} className="space-y-3">
+                        <div className="flex items-center justify-between pb-1.5 border-b border-[#3A2920]">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg sm:text-xl">{cat.icon}</span>
+                            <h3 className="font-display font-black text-sm sm:text-base text-[#F3EBDD] uppercase tracking-wide">
+                              {cat.label}
+                            </h3>
                           </div>
-                          <p className="text-[11px] text-[#D1C2B0] line-clamp-2 mt-1">
-                            {item.description}
-                          </p>
-                          <span className="text-xs font-black text-[#C9A45C] block mt-1.5">
-                            {item.sizes && item.sizes.length > 0
-                              ? `From ₹${item.sizes[0].price}`
-                              : `₹${item.price}`}
+                          <span className="text-[10px] font-bold text-[#C9A45C] bg-[#201814] px-2.5 py-0.5 rounded-full border border-[#3A2920]">
+                            {catItems.length} dishes
                           </span>
                         </div>
-                      </div>
 
-                      <div className="mt-3 pt-2.5 border-t border-[#3A2920] flex items-center justify-between">
-                        <span className="text-[10px] text-[#D1C2B0]/80">
-                          {item.sizes ? "Select Size & Extras" : "Drive-Thru Ready"}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => handleOpenCustomize(item)}
-                          className="px-3.5 py-1.5 rounded-lg bg-[#C9A45C] hover:bg-[#D8B772] text-[#17120F] font-bold text-xs uppercase tracking-wider transition-all shadow-sm"
-                        >
-                          + CUSTOMIZE & ADD
-                        </button>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                          {catItems.map((item) => renderItemCard(item))}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
@@ -884,7 +1040,7 @@ export function DriveThruModal() {
                   onClick={() => {
                     clearDriveThru();
                     closeDriveThru();
-                    setStep("welcome");
+                    setStep("menu");
                   }}
                   className="w-full py-2.5 text-xs text-[#D1C2B0] hover:text-[#F3EBDD]"
                 >
@@ -894,6 +1050,34 @@ export function DriveThruModal() {
             </div>
           )}
         </div>
+
+        {/* Sticky Bottom Bar for Menu Step */}
+        {step === "menu" && driveThruTotalCount > 0 && (
+          <div className="p-3 sm:p-4 bg-[#1E1713] border-t border-[#C9A45C]/40 flex items-center justify-between gap-3 shrink-0 shadow-[0_-10px_30px_rgba(0,0,0,0.6)]">
+            <div className="flex items-center gap-2.5">
+              <div className="size-9 rounded-xl bg-[#C9A45C] text-[#17120F] flex items-center justify-center font-black shrink-0 shadow">
+                <ShoppingBag className="size-4" />
+              </div>
+              <div>
+                <span className="text-xs font-bold text-[#F3EBDD] block leading-none">
+                  {driveThruTotalCount} {driveThruTotalCount === 1 ? "dish" : "dishes"} in Tray
+                </span>
+                <span className="text-sm font-black text-[#C9A45C] mt-1 block leading-none">
+                  Total: ₹{driveThruTotalPrice}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setStep("cart")}
+              className="px-4 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] border border-[#E8C88B]/70 text-[#FFFDF8] font-black text-xs uppercase tracking-wider shadow-lg flex items-center gap-2 transition-all transform active:scale-95"
+            >
+              <span>PROCEED TO PICKUP</span>
+              <ArrowRight className="size-3.5" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
