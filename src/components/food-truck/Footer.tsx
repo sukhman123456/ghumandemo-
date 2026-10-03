@@ -30,8 +30,16 @@ export function Footer() {
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-3">
-                <div className="size-11 rounded-full border border-[#C9A45C] bg-[#201814] flex items-center justify-center shadow-[0_0_15px_rgba(201,164,92,0.25)]">
-                  <span className="font-display font-black text-sm text-[#C9A45C]">G</span>
+                <div className="relative size-11 rounded-full shrink-0 flex items-center justify-center">
+                  <img
+                    src="/ghuman-logo.svg"
+                    alt="Ghumans Kitchen Express Official Logo"
+                    className="size-full rounded-full object-cover shadow-[0_0_15px_rgba(201,164,92,0.35)] border border-[#D4AF67]/70"
+                  />
+                  <span
+                    className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-[#16A34A] border-2 border-[#17120F] shadow-sm z-10"
+                    title="100% Pure Vegetarian"
+                  />
                 </div>
                 <div>
                   <span className="font-display text-xl font-black text-[#F3EBDD] tracking-tight block leading-none">

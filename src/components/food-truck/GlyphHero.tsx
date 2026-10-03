@@ -55,7 +55,6 @@ export function GlyphHero() {
       className="relative w-full bg-[#F6F0E7] text-[#1C1815]"
       style={{
         fontFamily: face,
-        containerType: "inline-size",
       }}
     >
       <style>{`
@@ -297,10 +296,10 @@ export function GlyphHero() {
         }}
         background={
           <div className="absolute inset-0 w-full h-full overflow-hidden">
-            {/* Real Uploaded Indian Food Panorama with Sizzling Paneer, Naan, Tandoori & Curries */}
+            {/* Gourmet Street Food Feast: Artisan Pizza, Burgers, Paneer Wraps, Fries & Mojito */}
             <img
-              src="/hero-punjabi-vegetarian.jpg"
-              alt="Ghumans Kitchen Express Pure Vegetarian Cuisine"
+              src="/hero-fastfood-feast.jpg"
+              alt="Ghumans Kitchen Express Artisan Pizzas, Burgers, Paneer Wraps and Loaded Fries"
               className="w-full h-full object-cover object-[center_46%] brightness-[1.08] contrast-[1.14] saturate-[1.18] will-change-transform"
             />
             {/* Warm Golden Atmosphere Radiating Through the Letters */}

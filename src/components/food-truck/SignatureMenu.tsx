@@ -79,7 +79,7 @@ export function SignatureMenu() {
                   src={item.image}
                   alt={item.name}
                   loading="lazy"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
                 />
 
                 {/* Pure Veg Badge */}

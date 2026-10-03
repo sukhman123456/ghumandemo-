@@ -37,6 +37,15 @@ export function OrderCTA() {
           </span>
         </div>
 
+        {/* Official Brand Logo Badge */}
+        <div className="relative size-16 sm:size-20 rounded-full mb-5 p-1 bg-[#201814] border-2 border-[#C9A45C] shadow-[0_0_30px_rgba(201,164,92,0.45)]">
+          <img
+            src="/ghuman-logo.svg"
+            alt="Ghumans Kitchen Express Official Logo"
+            className="size-full rounded-full object-cover"
+          />
+        </div>
+
         {/* Primary Callout Typography */}
         <h2 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight text-[#F3EBDD] leading-none">
           HUNGRY?

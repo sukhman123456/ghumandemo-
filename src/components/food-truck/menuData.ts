@@ -27,7 +27,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "pizza",
     description: "Crispy hand-stretched crust topped with golden sweet corn, bell peppers, sliced black olives, button mushrooms & gooey mozzarella.",
     price: 229,
-    image: "/food-pizza.jpg",
+    image: "/menu-pizza-farmhouse.jpg",
     tag: "Chef's Special",
     isPopular: true,
   },
@@ -37,7 +37,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "pizza",
     description: "Rich spiced Punjabi makhani sauce base, marinated soft paneer chunks, crisp red onions and aromatic kasuri methi.",
     price: 259,
-    image: "/food-pizza.jpg",
+    image: "/menu-pizza-paneer-makhani.jpg",
     tag: "Bestseller",
     isPopular: true,
   },
@@ -47,7 +47,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "pizza",
     description: "San Marzano style tomato concassé, generous double mozzarella melt and fresh basil leaves.",
     price: 189,
-    image: "/food-pizza.jpg",
+    image: "/menu-pizza-margherita.jpg",
   },
 
   // Burgers
@@ -57,7 +57,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "burger",
     description: "Crispy spiced potato herb patty nestled in toasted sesame brioche, crisp iceberg lettuce, tangy house secret relish.",
     price: 89,
-    image: "/food-burger.jpg",
+    image: "/menu-burger-aloo-herb.jpg",
     tag: "Popular",
     isPopular: true,
   },
@@ -67,7 +67,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "burger",
     description: "Thick grilled tandoori spiced paneer steak with melted cheddar slice, crunchy onions, and creamy jalapeño mayo.",
     price: 149,
-    image: "/food-burger.jpg",
+    image: "/menu-burger-paneer-double.jpg",
     tag: "Signature",
     isPopular: true,
   },
@@ -77,7 +77,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "burger",
     description: "Golden crispy veggie patty layered with melted cheese, juicy tomato slices, sweet gherkins and smoky chipotle cream.",
     price: 119,
-    image: "/food-burger.jpg",
+    image: "/menu-burger-royal-veg.jpg",
   },
 
   // Wraps
@@ -87,7 +87,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "wraps",
     description: "Charcoal grilled paneer cubes tossed in mint chutney, pickled onions and crunchy bell peppers in a toasted flaky paratha wrap.",
     price: 149,
-    image: "/food-wrap.jpg",
+    image: "/menu-wrap-paneer-tikka.jpg",
     tag: "Must Try",
     isPopular: true,
   },
@@ -97,7 +97,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "wraps",
     description: "Seasoned crispy corn & bean filling with fire-roasted tomato salsa, melted cheese sauce and shredded cabbage crunch.",
     price: 129,
-    image: "/food-wrap.jpg",
+    image: "/menu-wrap-mexican-salsa.jpg",
   },
 
   // Fries
@@ -107,7 +107,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "fries",
     description: "Crispy golden crinkle-cut fries smothered in warm molten cheddar cheese sauce, roasted jalapeños and herb sprinkle.",
     price: 129,
-    image: "/food-fries.jpg",
+    image: "/menu-fries-loaded-cheesy.jpg",
     tag: "Crowd Favorite",
     isPopular: true,
   },
@@ -117,7 +117,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "fries",
     description: "Skin-on French fries tossed in our signature fiery African peri-peri seasoning dust, served with garlic dip.",
     price: 99,
-    image: "/food-fries.jpg",
+    image: "/menu-fries-peri-peri.jpg",
     isPopular: true,
   },
 
@@ -128,7 +128,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "shakes",
     description: "Ultra-thick churned ice cream shake blended with rich dark Belgian chocolate sauce, whipped cream and choco crisps.",
     price: 129,
-    image: "/food-shake.jpg",
+    image: "/menu-shake-belgian-chocolate.jpg",
     tag: "Bestseller",
     isPopular: true,
   },
@@ -138,7 +138,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "shakes",
     description: "Slow-brewed dark espresso blended with whole milk and vanilla ice cream, topped with rich coffee drizzle.",
     price: 109,
-    image: "/food-shake.jpg",
+    image: "/menu-shake-cold-coffee.jpg",
     isPopular: true,
   },
   {
@@ -147,7 +147,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "drinks",
     description: "Fresh hand-muddled mint leaves, zesty lemon slices, bubbly club soda and crushed ice. The ultimate highway thirst quencher.",
     price: 89,
-    image: "/food-mojito.jpg",
+    image: "/menu-drink-mint-mojito.jpg",
     tag: "Refresher",
     isPopular: true,
   },
@@ -157,7 +157,7 @@ export const MENU_ITEMS: MenuItem[] = [
     category: "drinks",
     description: "Traditional highway kadak tea brewed with fresh ginger, cardamom and aromatic whole spices in earthen clay cups.",
     price: 40,
-    image: "/food-mojito.jpg",
+    image: "/menu-drink-kulhad-chai.jpg",
   },
 ];
 
@@ -179,7 +179,7 @@ export const TRUCK_HOTSPOTS = [
     position: { top: "12%", left: "74%" },
     category: "Burgers & Fries",
     description: "Our signature illuminated rooftop billboard displaying our pure vegetarian burger & crispy golden fries. 'Good Food Happier People' is our daily promise.",
-    highlightImage: "/food-burger.jpg",
+    highlightImage: "/menu-burger-paneer-double.jpg",
     buttonLabel: "View Burgers",
   },
   {
@@ -199,7 +199,7 @@ export const TRUCK_HOTSPOTS = [
     position: { top: "52%", left: "71%" },
     category: "Artisan Pizzas",
     description: "Watch your pizza being freshly hand-tossed and baked at over 350°C right before your eyes with molten mozzarella and fresh veggies.",
-    highlightImage: "/food-pizza.jpg",
+    highlightImage: "/menu-pizza-farmhouse.jpg",
     buttonLabel: "View Pizzas",
   },
   {
@@ -209,7 +209,7 @@ export const TRUCK_HOTSPOTS = [
     position: { top: "53%", left: "80%" },
     category: "Wraps & Kebabs",
     description: "Freshly rolled parathas stuffed with sizzling marinated paneer tikka, spicy mint chutney and crisp garden onions.",
-    highlightImage: "/food-wrap.jpg",
+    highlightImage: "/menu-wrap-paneer-tikka.jpg",
     buttonLabel: "View Wraps",
   },
   {
@@ -219,7 +219,7 @@ export const TRUCK_HOTSPOTS = [
     position: { top: "55%", left: "87%" },
     category: "Beverages",
     description: "Ice-cold Belgian shakes, thick cold coffee frappes and fizzy refreshing mint mojitos crafted on-the-spot.",
-    highlightImage: "/food-mojito.jpg",
+    highlightImage: "/menu-drink-mint-mojito.jpg",
     buttonLabel: "View Shakes",
   },
 ];

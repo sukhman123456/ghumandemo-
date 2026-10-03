@@ -44,7 +44,6 @@
     border-color: #3A2920;
   }
   html {
-    scroll-behavior: smooth;
     scroll-padding-top: 80px;
     background-color: #17120F;
     color: #F3EBDD;
@@ -54,7 +53,7 @@
     margin: 0;
     background-color: #17120F;
     color: #F3EBDD;
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -68,8 +67,8 @@
 .film-grain {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 99;
   opacity: 0.026;
@@ -233,17 +232,16 @@
   border-bottom: 1px solid rgba(201, 164, 92, 0.14);
 }
 
-/* Subtle Blur-to-Sharp Section Transition Utility */
+/* Clean, Silk-Smooth Section Entrance */
 .section-reveal {
-  opacity: 0;
-  transform: translateY(16px) scale(0.985);
-  filter: blur(4px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.08;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
 .section-reveal.is-visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
+  transform: translateY(0);
 }
 
 /* Reduced motion accessibility */

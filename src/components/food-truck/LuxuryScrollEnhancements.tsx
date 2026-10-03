@@ -23,23 +23,31 @@ export function LuxuryScrollEnhancements() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
-    // Section reveal observer: subtle blur-to-sharp & 0.985 -> 1 scale
+    // Section reveal observer: smooth fade-in as user scrolls into view
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
           }
         });
       },
       {
-        threshold: 0.08,
-        rootMargin: "0px 0px -40px 0px",
+        threshold: 0.02,
+        rootMargin: "0px 0px 80px 0px",
       }
     );
 
     const revealElements = document.querySelectorAll(".section-reveal");
-    revealElements.forEach((el) => observer.observe(el));
+    revealElements.forEach((el) => {
+      observer.observe(el);
+      // If already in or near viewport on mount, reveal immediately
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 80) {
+        el.classList.add("is-visible");
+      }
+    });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -60,23 +68,23 @@ export function LuxuryScrollEnhancements() {
         />
       </div>
 
-      {/* 3. Soft Champagne-Gold Ambient Light Sweep (Moves gently with scroll) */}
-      <div
-        className="champagne-light-sweep fixed -top-[20vw] -left-[10vw] w-[50vw] h-[50vw] z-0 opacity-15"
-        style={{
-          transform: `translate3d(0, ${scrollProgress * 4.5}px, 0)`,
-          transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="champagne-light-sweep fixed top-[45vh] -right-[15vw] w-[45vw] h-[45vw] z-0 opacity-10"
-        style={{
-          transform: `translate3d(0, ${-scrollProgress * 3.5}px, 0)`,
-          transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-        }}
-        aria-hidden="true"
-      />
+      {/* 3. Soft Champagne-Gold Ambient Light Sweep (Contained strictly to prevent horizontal overflow) */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+        <div
+          className="champagne-light-sweep absolute -top-[20vw] -left-[10vw] w-[50vw] h-[50vw] opacity-15"
+          style={{
+            transform: `translate3d(0, ${scrollProgress * 4.5}px, 0)`,
+            transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+          }}
+        />
+        <div
+          className="champagne-light-sweep absolute top-[45vh] -right-[15vw] w-[45vw] h-[45vw] opacity-10"
+          style={{
+            transform: `translate3d(0, ${-scrollProgress * 3.5}px, 0)`,
+            transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+          }}
+        />
+      </div>
     </>
   );
 }

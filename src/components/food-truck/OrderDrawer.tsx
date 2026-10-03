@@ -33,8 +33,12 @@ export function OrderDrawer() {
         {/* Drawer Header */}
         <div className="p-6 border-b border-[#3A2920] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="size-10 rounded-full bg-[#C9A45C]/10 border border-[#C9A45C] flex items-center justify-center text-[#C9A45C]">
-              <ShoppingBag className="size-5" />
+            <div className="relative size-11 rounded-full shrink-0 flex items-center justify-center p-0.5 bg-[#201814] border border-[#C9A45C] shadow-[0_0_15px_rgba(201,164,92,0.35)]">
+              <img
+                src="/ghuman-logo.svg"
+                alt="Ghumans Kitchen Express"
+                className="size-full rounded-full object-cover"
+              />
             </div>
             <div>
               <h2 className="font-display font-black text-lg text-[#F3EBDD] leading-none">

@@ -32,7 +32,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     category: "food",
     title: "Artisan Farmhouse Pizza",
     subtitle: "Stone-baked with molten mozzarella",
-    image: "/food-pizza.jpg",
+    image: "/menu-pizza-farmhouse.jpg",
     span: "aspect-square",
   },
   {
@@ -40,7 +40,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     category: "food",
     title: "Crispy Sizzling Veg Burger",
     subtitle: "Toasted sesame brioche & golden fries",
-    image: "/food-burger.jpg",
+    image: "/menu-burger-aloo-herb.jpg",
     span: "aspect-square",
   },
   {
@@ -48,7 +48,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     category: "drinks",
     title: "Belgian Chocolate Thick Shake",
     subtitle: "Churned ice cream & cold coffee",
-    image: "/food-shake.jpg",
+    image: "/menu-shake-belgian-chocolate.jpg",
     span: "aspect-square",
   },
   {
@@ -56,7 +56,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     category: "drinks",
     title: "Zesty Virgin Mint Mojito",
     subtitle: "Crushed ice, fresh mint & bubbly soda",
-    image: "/food-mojito.jpg",
+    image: "/menu-drink-mint-mojito.jpg",
     span: "aspect-square",
   },
   {
@@ -64,7 +64,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     category: "food",
     title: "Punjabi Paneer Tikka Wrap",
     subtitle: "Grilled paneer cubes & mint chutney",
-    image: "/food-wrap.jpg",
+    image: "/menu-wrap-paneer-tikka.jpg",
     span: "md:col-span-2 aspect-[16/9] md:aspect-auto",
   },
   {
@@ -72,7 +72,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     category: "food",
     title: "Loaded Cheesy Crinkle Fries",
     subtitle: "Warm cheddar cheese & peri-peri spice",
-    image: "/food-fries.jpg",
+    image: "/menu-fries-loaded-cheesy.jpg",
     span: "aspect-square",
   },
 ];

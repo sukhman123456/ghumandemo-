@@ -24,10 +24,19 @@ export function ContactSection() {
               GET IN TOUCH
             </div>
 
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-[#F3EBDD] mt-4 leading-tight">
-              GHUMANS <br />
-              <span className="text-[#C9A45C]">KITCHEN EXPRESS</span>
-            </h2>
+            <div className="flex items-center gap-4 mt-4">
+              <div className="relative size-14 sm:size-16 rounded-full shrink-0 flex items-center justify-center p-1 bg-[#201814] border-2 border-[#C9A45C] shadow-[0_0_25px_rgba(201,164,92,0.45)]">
+                <img
+                  src="/ghuman-logo.svg"
+                  alt="Ghumans Kitchen Express Official Logo"
+                  className="size-full rounded-full object-cover"
+                />
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-[#F3EBDD] leading-tight">
+                GHUMANS <br />
+                <span className="text-[#C9A45C]">KITCHEN EXPRESS</span>
+              </h2>
+            </div>
 
             <p className="text-sm sm:text-base text-[#D1C2B0] mt-4 max-w-xl leading-relaxed">
               We look forward to serving you on your highway journey. Stop by for hot pure veg fast food, panoramic rooftop views, or reach out directly for pre-orders.

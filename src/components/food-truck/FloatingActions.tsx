@@ -1,46 +1,70 @@
 import React from "react";
-import { MessageCircle, Phone, ShoppingBag } from "lucide-react";
+import { Instagram, MessageCircle, Phone, ShoppingBag } from "lucide-react";
 import { useOrder } from "./OrderContext";
 
 export function FloatingActions() {
   const { openOrderDrawer, totalCount } = useOrder();
+  const instagramUrl = "https://instagram.com";
   const whatsappUrl =
     "https://wa.me/919501201215?text=" +
     encodeURIComponent("Hello Ghumans Kitchen Express! I'd like to place an order from your food truck.");
 
   return (
-    <div className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end gap-2 sm:gap-3 pointer-events-none">
-      {/* Floating WhatsApp Button */}
+    <aside
+      aria-label="Quick Actions"
+      className="fixed z-40 flex flex-col items-end gap-2.5 pointer-events-none"
+      style={{
+        right: "max(16px, env(safe-area-inset-right, 16px))",
+        bottom: "max(16px, env(safe-area-inset-bottom, 16px))",
+      }}
+    >
+      {/* Floating Instagram Action */}
+      <a
+        href={instagramUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Visit Ghumans Kitchen Express on Instagram"
+        className="pointer-events-auto group inline-flex items-center gap-2 rounded-full bg-[#18120F]/95 backdrop-blur-md text-[#F3EBDD] px-3.5 py-2.5 sm:px-4 sm:py-2.5 shadow-[0_4px_20px_rgba(201,164,92,0.25)] hover:shadow-[0_6px_25px_rgba(225,48,108,0.4)] hover:scale-105 active:scale-95 transition-all duration-300 border border-[#C9A45C]/40 hover:border-[#E1306C]/70 whitespace-nowrap animate-in fade-in slide-in-from-bottom-3 duration-700"
+      >
+        <span className="relative flex items-center justify-center size-5 rounded-full bg-gradient-to-tr from-[#FD1D1D]/20 via-[#E1306C]/20 to-[#833AB4]/20 border border-[#E1306C]/40 group-hover:border-[#E1306C] transition-colors shrink-0">
+          <Instagram className="size-3.5 text-[#E1306C] group-hover:text-[#F3EBDD] transition-colors" />
+        </span>
+        <span className="text-xs font-bold tracking-wide leading-none text-[#F3EBDD] group-hover:text-[#E8C88B] transition-colors">
+          Instagram
+        </span>
+      </a>
+
+      {/* Floating WhatsApp Action */}
       <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Order or Chat on WhatsApp"
-        className="pointer-events-auto group flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#34C759] text-white px-3 sm:px-4 py-2 sm:py-2.5 shadow-[0_4px_16px_rgba(52,199,89,0.35)] hover:shadow-[0_6px_22px_rgba(52,199,89,0.5)] hover:scale-105 active:scale-95 transition-all"
+        aria-label="Chat or order with Ghumans Kitchen Express on WhatsApp"
+        className="pointer-events-auto group inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white px-3.5 py-2.5 sm:px-4 sm:py-2.5 shadow-[0_4px_20px_rgba(37,211,102,0.45)] hover:shadow-[0_6px_25px_rgba(37,211,102,0.65)] hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20 whitespace-nowrap"
       >
-        <MessageCircle className="size-3.5 sm:size-4 fill-white text-[#34C759]" />
-        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-          WHATSAPP US
+        <MessageCircle className="size-4 fill-white text-[#25D366] shrink-0" />
+        <span className="text-xs font-bold tracking-wide leading-none">
+          WhatsApp
         </span>
       </a>
 
-      {/* Floating Order Button with Cart Count */}
+      {/* Floating Order Cart Action */}
       <button
         type="button"
         onClick={() => openOrderDrawer()}
-        aria-label="Open food truck order tray"
-        className="pointer-events-auto group flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#E8C88B] border border-[#D4AF67]/50 text-[#1C1815] px-3 sm:px-4 py-2 sm:py-2.5 shadow-[0_4px_16px_rgba(201,164,92,0.3)] hover:shadow-[0_6px_22px_rgba(201,164,92,0.45)] hover:scale-105 active:scale-95 transition-all"
+        aria-label={`Open food truck order tray (${totalCount} items)`}
+        className="pointer-events-auto group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#D4AF67] to-[#E8C88B] text-[#1C1815] px-3.5 py-2.5 sm:px-4 sm:py-2.5 shadow-[0_4px_20px_rgba(212,175,103,0.45)] hover:shadow-[0_6px_25px_rgba(212,175,103,0.65)] hover:scale-105 active:scale-95 transition-all duration-200 border border-[#F3EBDD]/40 whitespace-nowrap"
       >
-        <ShoppingBag className="size-3.5 sm:size-4 text-[#1C1815]" />
-        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-          ORDER FOOD
+        <ShoppingBag className="size-4 text-[#1C1815] shrink-0" />
+        <span className="text-xs font-extrabold tracking-wide leading-none">
+          Order Food
         </span>
         {totalCount > 0 && (
-          <span className="inline-flex size-4 sm:size-5 items-center justify-center rounded-full bg-[#1C1815] text-[9px] sm:text-[10px] font-black text-[#E8C88B]">
+          <span className="inline-flex size-5 items-center justify-center rounded-full bg-[#1C1815] text-[10px] font-black text-[#E8C88B] ring-1 ring-[#D4AF67]/60 ml-0.5 animate-in zoom-in-75">
             {totalCount}
           </span>
         )}
       </button>
-    </div>
+    </aside>
   );
 }

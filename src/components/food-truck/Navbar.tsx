@@ -64,10 +64,14 @@ export function Navbar() {
             className="flex items-center gap-3 group shrink-0"
             aria-label="Ghumans Kitchen Express Home"
           >
-            <div className="relative size-10 sm:size-11 rounded-full border border-[#C9A45C]/70 bg-[#1F1916] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-              <span className="font-serif font-black text-sm text-[#D4AF67]">G</span>
+            <div className="relative size-10 sm:size-11 rounded-full group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
+              <img
+                src="/ghuman-logo.svg"
+                alt="Ghumans Kitchen Express Official Logo Badge"
+                className="size-full rounded-full object-cover shadow-[0_0_15px_rgba(201,164,92,0.45)] border border-[#D4AF67]/80"
+              />
               <span
-                className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-[#2E8B57] border-2 border-white shadow-sm"
+                className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-[#16A34A] border-2 border-[#17120F] shadow-sm z-10"
                 title="100% Pure Vegetarian"
               />
             </div>
@@ -176,8 +180,12 @@ export function Navbar() {
           {/* Header */}
           <div className="flex items-center justify-between pb-6 border-b border-[#3A2920]">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-full border border-[#C9A45C] bg-[#17120F] flex items-center justify-center shadow-[0_0_10px_rgba(201,164,92,0.3)]">
-                <UtensilsCrossed className="size-5 text-[#C9A45C]" />
+              <div className="size-11 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(201,164,92,0.4)] shrink-0">
+                <img
+                  src="/ghuman-logo.svg"
+                  alt="Ghumans Kitchen Express Official Logo Badge"
+                  className="size-full rounded-full object-cover border border-[#D4AF67]/80"
+                />
               </div>
               <div>
                 <span className="font-display text-lg font-bold text-[#F3EBDD] block leading-none">

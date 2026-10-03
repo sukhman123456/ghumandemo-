@@ -25,7 +25,7 @@ const JOURNEY_STOPS: JourneyStop[] = [
     title: "HAND-TOSSED PIZZA",
     tagline: "Stone-Baked at 350°C",
     description: "Hand-stretched dough fermented for 24 hours, spread with San Marzano style herb sauce, layered with 100% pure mozzarella and freshly diced farm veggies.",
-    image: "/food-pizza.jpg",
+    image: "/menu-pizza-farmhouse.jpg",
     highlightDish: "Farmhouse Gourmet Pizza",
     highlightPrice: 229,
     featuredDishes: [
@@ -42,7 +42,7 @@ const JOURNEY_STOPS: JourneyStop[] = [
     title: "GOURMET BURGERS",
     tagline: "Golden Brioche & Crisp Patties",
     description: "Thick hand-pressed vegetarian patties griddled sizzling hot, crowned with melted cheese, crisp garden iceberg lettuce and house secret tangy burger dressing.",
-    image: "/food-burger.jpg",
+    image: "/menu-burger-paneer-double.jpg",
     highlightDish: "Double Decker Paneer Burger",
     highlightPrice: 149,
     featuredDishes: [
@@ -59,7 +59,7 @@ const JOURNEY_STOPS: JourneyStop[] = [
     title: "PUNJABI TIKKA WRAPS",
     tagline: "Rolled Fresh on the Flattop",
     description: "Tandoor-charred paneer cubes and crunchy veggies tossed in zesty cilantro-mint dressing, wrapped snugly inside a flaky, golden-toasted flatbread.",
-    image: "/food-wrap.jpg",
+    image: "/menu-wrap-paneer-tikka.jpg",
     highlightDish: "Punjabi Paneer Tikka Wrap",
     highlightPrice: 149,
     featuredDishes: [
@@ -76,7 +76,7 @@ const JOURNEY_STOPS: JourneyStop[] = [
     title: "LOADED CRINKLE FRIES",
     tagline: "Molten Cheese & Peri-Peri Spiced",
     description: "Crinkle-cut potatoes fried to an audible crunch, drenched with velvety hot cheddar cheese sauce and dusted with fiery African peri-peri spices.",
-    image: "/food-fries.jpg",
+    image: "/menu-fries-loaded-cheesy.jpg",
     highlightDish: "Loaded Cheesy Crinkle Fries",
     highlightPrice: 129,
     featuredDishes: [
@@ -93,7 +93,7 @@ const JOURNEY_STOPS: JourneyStop[] = [
     title: "THICK SHAKES & MOJITOS",
     tagline: "Ice-Cold Highway Refreshers",
     description: "Rich blended shakes whipped with decadent Belgian chocolate, creamy cold coffee frappes, and crystal-clear sparkling virgin mint mojitos.",
-    image: "/food-shake.jpg",
+    image: "/menu-shake-belgian-chocolate.jpg",
     highlightDish: "Belgian Chocolate Thick Shake",
     highlightPrice: 129,
     featuredDishes: [

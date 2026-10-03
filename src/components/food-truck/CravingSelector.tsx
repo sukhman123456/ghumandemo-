@@ -18,7 +18,7 @@ const CRAVINGS: CravingCategory[] = [
     icon: "🍕",
     label: "PIZZA",
     tagline: "Hand-tossed crust, bubbling cheese & fragrant basil",
-    heroImage: "/food-pizza.jpg",
+    heroImage: "/menu-pizza-farmhouse.jpg",
     popularDish: "Farmhouse Gourmet Pizza",
   },
   {
@@ -26,7 +26,7 @@ const CRAVINGS: CravingCategory[] = [
     icon: "🍔",
     label: "BURGER",
     tagline: "Golden toasted brioche & sizzling double paneer",
-    heroImage: "/food-burger.jpg",
+    heroImage: "/menu-burger-paneer-double.jpg",
     popularDish: "Double Decker Paneer Burger",
   },
   {
@@ -34,7 +34,7 @@ const CRAVINGS: CravingCategory[] = [
     icon: "🌯",
     label: "WRAP",
     tagline: "Grilled tandoori paneer & zesty mint rolls",
-    heroImage: "/food-wrap.jpg",
+    heroImage: "/menu-wrap-paneer-tikka.jpg",
     popularDish: "Punjabi Paneer Tikka Wrap",
   },
   {
@@ -42,7 +42,7 @@ const CRAVINGS: CravingCategory[] = [
     icon: "🍟",
     label: "FRIES",
     tagline: "Hot crinkle fries swimming in rich cheddar sauce",
-    heroImage: "/food-fries.jpg",
+    heroImage: "/menu-fries-loaded-cheesy.jpg",
     popularDish: "Loaded Cheesy Crinkle Fries",
   },
   {
@@ -50,7 +50,7 @@ const CRAVINGS: CravingCategory[] = [
     icon: "🥤",
     label: "SHAKES",
     tagline: "Creamy Belgian chocolate & cold coffee frappe",
-    heroImage: "/food-shake.jpg",
+    heroImage: "/menu-shake-belgian-chocolate.jpg",
     popularDish: "Belgian Chocolate Thick Shake",
   },
 ];
