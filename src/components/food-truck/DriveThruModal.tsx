@@ -39,6 +39,151 @@ const AVAILABLE_ADDONS: AddonOption[] = [
   { name: "Tandoori Garlic Dip", price: 30 },
 ];
 
+// Ultra-performant memoized dish card to prevent re-rendering when other items change
+interface DriveThruItemCardProps {
+  item: MenuItem;
+  qtyInCart: number;
+  firstCartEntryId?: string;
+  onOpenCustomize: (item: MenuItem) => void;
+  onQuickAdd: (item: MenuItem) => void;
+  onUpdateQty: (cartId: string, delta: number) => void;
+}
+
+const DriveThruItemCard = React.memo(function DriveThruItemCard({
+  item,
+  qtyInCart,
+  firstCartEntryId,
+  onOpenCustomize,
+  onQuickAdd,
+  onUpdateQty,
+}: DriveThruItemCardProps) {
+  return (
+    <div className="p-3 sm:p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920] flex flex-col justify-between transition-colors shadow-sm">
+      <div className="flex gap-3">
+        <div className="relative size-20 sm:size-22 rounded-xl overflow-hidden bg-[#17120F] shrink-0 border border-[#3A2920]">
+          <img
+            src={item.image}
+            alt={item.name}
+            loading="lazy"
+            decoding="async"
+            width={88}
+            height={88}
+            className="size-full object-cover"
+            onError={(e) => {
+              if (item.fallbackImage) e.currentTarget.src = item.fallbackImage;
+            }}
+          />
+          <span
+            className="absolute top-1.5 left-1.5 size-2 rounded-full bg-[#16A34A] border border-white shadow-sm"
+            title="100% Pure Vegetarian"
+          />
+          {item.tag && (
+            <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-[#8B0000] text-[#FFFDF8] text-[8px] font-black uppercase tracking-wider">
+              {item.tag}
+            </span>
+          )}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {item.code && (
+              <span className="text-[9px] font-black text-[#C9A45C] bg-[#17120F] px-1.5 py-0.5 rounded border border-[#C9A45C]/40">
+                {item.code}
+              </span>
+            )}
+            <h4 className="font-bold text-xs sm:text-sm text-[#F3EBDD] truncate">
+              {item.name}
+            </h4>
+          </div>
+
+          <p className="text-[10px] sm:text-[11px] text-[#D1C2B0]/80 line-clamp-2 mt-1 leading-relaxed">
+            {item.description}
+          </p>
+
+          <div className="mt-1.5 flex items-center justify-between">
+            <span className="text-xs sm:text-sm font-black text-[#C9A45C]">
+              {item.sizes && item.sizes.length > 0
+                ? `From ₹${item.sizes[0].price}`
+                : `₹${item.price}`}
+            </span>
+
+            {item.sizes && item.sizes.length > 0 && (
+              <span className="text-[9px] text-[#D1C2B0]/70 uppercase font-semibold">
+                Sizes Available
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Action button: Stepper if in cart or Add/Customize */}
+      <div className="mt-2.5 pt-2 border-t border-[#3A2920]/80 flex items-center justify-between gap-2">
+        {qtyInCart > 0 ? (
+          <div className="w-full flex items-center justify-between bg-[#17120F] rounded-xl p-1 border border-[#C9A45C]/60">
+            <button
+              type="button"
+              onClick={() => {
+                if (firstCartEntryId) {
+                  onUpdateQty(firstCartEntryId, -1);
+                }
+              }}
+              className="size-7 rounded-lg bg-[#201814] text-[#D1C2B0] hover:text-[#C9A45C] flex items-center justify-center font-bold active:scale-95"
+              aria-label="Decrease quantity"
+            >
+              <Minus className="size-3" />
+            </button>
+
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-black text-[#FFFDF8]">
+                {qtyInCart} in Tray
+              </span>
+              {item.sizes && (
+                <button
+                  type="button"
+                  onClick={() => onOpenCustomize(item)}
+                  className="text-[9px] text-[#C9A45C] hover:underline font-bold"
+                >
+                  +Size
+                </button>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                if (firstCartEntryId) {
+                  onUpdateQty(firstCartEntryId, 1);
+                } else {
+                  onQuickAdd(item);
+                }
+              }}
+              className="size-7 rounded-lg bg-[#C9A45C] text-[#17120F] hover:bg-[#D8B772] flex items-center justify-center font-bold active:scale-95"
+              aria-label="Increase quantity"
+            >
+              <Plus className="size-3" />
+            </button>
+          </div>
+        ) : (
+          <>
+            <span className="text-[9px] sm:text-[10px] text-[#D1C2B0]/70 truncate">
+              {item.sizes ? "Select Size & Extras" : "Drive-Thru Ready"}
+            </span>
+
+            <button
+              type="button"
+              onClick={() => onQuickAdd(item)}
+              className="whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg bg-[#C9A45C] hover:bg-[#D8B772] text-[#17120F] font-black text-[10px] sm:text-xs uppercase tracking-wider transition-all shadow-sm active:scale-95 flex items-center gap-1"
+            >
+              <Plus className="size-3 stroke-[2.5]" />
+              <span>{item.sizes ? "CUSTOMIZE" : "ADD TO TRAY"}</span>
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+});
+
 export function DriveThruModal() {
   const {
     isDriveThruOpen,
@@ -83,18 +228,51 @@ export function DriveThruModal() {
   const [formError, setFormError] = useState("");
   const [generatedOrderNo, setGeneratedOrderNo] = useState("");
 
+  // O(1) quantity map lookup for zero lag
+  const cartQuantityMap = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const entry of driveThruOrder) {
+      map[entry.item.id] = (map[entry.item.id] || 0) + entry.quantity;
+    }
+    return map;
+  }, [driveThruOrder]);
+
+  // O(1) first cart entry ID lookup for quantity stepper
+  const cartEntriesMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const entry of driveThruOrder) {
+      if (!map[entry.item.id]) {
+        map[entry.item.id] = entry.id;
+      }
+    }
+    return map;
+  }, [driveThruOrder]);
+
   // Filter items
   const filteredItems = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
     return MENU_ITEMS.filter((item) => {
       const matchesCategory =
         activeCategory === "all" || item.category === activeCategory;
-      const matchesSearch =
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (item.code && item.code.toLowerCase().includes(searchQuery.toLowerCase()));
-      return matchesCategory && matchesSearch;
+      if (!matchesCategory) return false;
+      if (!query) return true;
+      return (
+        item.name.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        (item.code && item.code.toLowerCase().includes(query))
+      );
     });
   }, [activeCategory, searchQuery]);
+
+  // Group items by category in a single pass O(N)
+  const itemsByCategory = useMemo(() => {
+    const map: Record<string, MenuItem[]> = {};
+    for (const item of filteredItems) {
+      if (!map[item.category]) map[item.category] = [];
+      map[item.category].push(item);
+    }
+    return map;
+  }, [filteredItems]);
 
   // Categories to render for grouped section view
   const categoriesToRender = useMemo(() => {
@@ -104,28 +282,29 @@ export function DriveThruModal() {
     return MENU_CATEGORIES.filter((c) => c.id !== "all");
   }, [activeCategory]);
 
-  if (!isDriveThruOpen) return null;
-
-  // Quantity of item currently in cart
-  const getItemCartQuantity = (itemId: string) => {
-    return driveThruOrder
-      .filter((entry) => entry.item.id === itemId)
-      .reduce((sum, entry) => sum + entry.quantity, 0);
-  };
-
-  const handleOpenCustomize = (item: MenuItem) => {
+  const handleOpenCustomize = React.useCallback((item: MenuItem) => {
     setCustomizingItem(item);
     setItemSelectedSize(item.sizes && item.sizes.length > 0 ? item.sizes[0] : undefined);
     setItemSelectedAddons([]);
-  };
+  }, []);
 
-  const handleQuickAdd = (item: MenuItem) => {
-    if (item.sizes && item.sizes.length > 0) {
-      handleOpenCustomize(item);
-    } else {
-      addToDriveThru(item);
-    }
-  };
+  const handleQuickAdd = React.useCallback(
+    (item: MenuItem) => {
+      if (item.sizes && item.sizes.length > 0) {
+        handleOpenCustomize(item);
+      } else {
+        addToDriveThru(item);
+      }
+    },
+    [handleOpenCustomize, addToDriveThru]
+  );
+
+  const handleUpdateQty = React.useCallback(
+    (cartId: string, delta: number) => {
+      updateDriveThruQuantity(cartId, delta);
+    },
+    [updateDriveThruQuantity]
+  );
 
   const handleAddCustomizedToCart = () => {
     if (!customizingItem) return;
@@ -174,142 +353,13 @@ export function DriveThruModal() {
     setStep("confirmed");
   };
 
-  // Render a dish card
-  const renderItemCard = (item: MenuItem) => {
-    const qtyInCart = getItemCartQuantity(item.id);
-    const cartEntriesForItem = driveThruOrder.filter((e) => e.item.id === item.id);
-
-    return (
-      <div
-        key={item.id}
-        className="p-3 sm:p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920] hover:border-[#C9A45C]/60 flex flex-col justify-between transition-all group shadow-sm hover:shadow-[0_4px_15px_rgba(0,0,0,0.4)]"
-      >
-        <div className="flex gap-3">
-          <div className="relative size-20 sm:size-22 rounded-xl overflow-hidden bg-[#17120F] shrink-0 border border-[#3A2920]">
-            <img
-              src={item.image}
-              alt={item.name}
-              className="size-full object-cover group-hover:scale-105 transition-transform duration-300"
-              onError={(e) => {
-                if (item.fallbackImage) e.currentTarget.src = item.fallbackImage;
-              }}
-            />
-            <span
-              className="absolute top-1.5 left-1.5 size-2 rounded-full bg-[#16A34A] border border-white shadow-sm"
-              title="100% Pure Vegetarian"
-            />
-            {item.tag && (
-              <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-[#8B0000] text-[#FFFDF8] text-[8px] font-black uppercase tracking-wider">
-                {item.tag}
-              </span>
-            )}
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {item.code && (
-                <span className="text-[9px] font-black text-[#C9A45C] bg-[#17120F] px-1.5 py-0.5 rounded border border-[#C9A45C]/40">
-                  {item.code}
-                </span>
-              )}
-              <h4 className="font-bold text-xs sm:text-sm text-[#F3EBDD] truncate group-hover:text-[#C9A45C] transition-colors">
-                {item.name}
-              </h4>
-            </div>
-
-            <p className="text-[10px] sm:text-[11px] text-[#D1C2B0]/80 line-clamp-2 mt-1 leading-relaxed">
-              {item.description}
-            </p>
-
-            <div className="mt-1.5 flex items-center justify-between">
-              <span className="text-xs sm:text-sm font-black text-[#C9A45C]">
-                {item.sizes && item.sizes.length > 0
-                  ? `From ₹${item.sizes[0].price}`
-                  : `₹${item.price}`}
-              </span>
-
-              {item.sizes && item.sizes.length > 0 && (
-                <span className="text-[9px] text-[#D1C2B0]/70 uppercase font-semibold">
-                  Sizes Available
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Action button: Stepper if in cart or Add/Customize */}
-        <div className="mt-2.5 pt-2 border-t border-[#3A2920]/80 flex items-center justify-between gap-2">
-          {qtyInCart > 0 ? (
-            <div className="w-full flex items-center justify-between bg-[#17120F] rounded-xl p-1 border border-[#C9A45C]/60">
-              <button
-                type="button"
-                onClick={() => {
-                  if (cartEntriesForItem.length > 0) {
-                    updateDriveThruQuantity(cartEntriesForItem[0].id, -1);
-                  }
-                }}
-                className="size-7 rounded-lg bg-[#201814] text-[#D1C2B0] hover:text-[#C9A45C] flex items-center justify-center font-bold"
-                aria-label="Decrease quantity"
-              >
-                <Minus className="size-3" />
-              </button>
-
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-black text-[#FFFDF8]">
-                  {qtyInCart} in Tray
-                </span>
-                {item.sizes && (
-                  <button
-                    type="button"
-                    onClick={() => handleOpenCustomize(item)}
-                    className="text-[9px] text-[#C9A45C] hover:underline font-bold"
-                  >
-                    +Size
-                  </button>
-                )}
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  if (cartEntriesForItem.length > 0) {
-                    updateDriveThruQuantity(cartEntriesForItem[0].id, 1);
-                  } else {
-                    handleQuickAdd(item);
-                  }
-                }}
-                className="size-7 rounded-lg bg-[#C9A45C] text-[#17120F] hover:bg-[#D8B772] flex items-center justify-center font-bold"
-                aria-label="Increase quantity"
-              >
-                <Plus className="size-3" />
-              </button>
-            </div>
-          ) : (
-            <>
-              <span className="text-[9px] sm:text-[10px] text-[#D1C2B0]/70 truncate">
-                {item.sizes ? "Select Size & Extras" : "Drive-Thru Ready"}
-              </span>
-
-              <button
-                type="button"
-                onClick={() => handleQuickAdd(item)}
-                className="whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-lg bg-[#C9A45C] hover:bg-[#D8B772] text-[#17120F] font-black text-[10px] sm:text-xs uppercase tracking-wider transition-all shadow-sm active:scale-95 flex items-center gap-1"
-              >
-                <Plus className="size-3 stroke-[2.5]" />
-                <span>{item.sizes ? "CUSTOMIZE" : "ADD TO TRAY"}</span>
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    );
-  };
+  if (!isDriveThruOpen) return null;
 
   return (
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/90 animate-in fade-in duration-200"
     >
       <div className="relative w-full max-w-4xl bg-[#17120F] text-[#F3EBDD] rounded-2xl sm:rounded-3xl border-2 border-[#C9A45C]/50 shadow-2xl overflow-hidden flex flex-col max-h-[94vh]">
         {/* Top Header Bar */}
@@ -369,7 +419,7 @@ export function DriveThruModal() {
         </div>
 
         {/* Modal Body with Multi-Step Flow */}
-        <div className="flex-1 overflow-y-auto p-3.5 sm:p-6">
+        <div className="flex-1 overflow-y-auto overscroll-contain p-3.5 sm:p-6">
           {/* STEP 1: FULL DRIVE-THRU MENU BROWSING & CATEGORIES */}
           {step === "menu" && (
             <div className="space-y-5">
@@ -500,14 +550,24 @@ export function DriveThruModal() {
                     )}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                    {filteredItems.map((item) => renderItemCard(item))}
+                    {filteredItems.map((item) => (
+                      <DriveThruItemCard
+                        key={item.id}
+                        item={item}
+                        qtyInCart={cartQuantityMap[item.id] || 0}
+                        firstCartEntryId={cartEntriesMap[item.id]}
+                        onOpenCustomize={handleOpenCustomize}
+                        onQuickAdd={handleQuickAdd}
+                        onUpdateQty={handleUpdateQty}
+                      />
+                    ))}
                   </div>
                 </div>
               ) : (
                 /* Complete Grouped Categories View - All sections displayed! */
                 <div className="space-y-8">
                   {categoriesToRender.map((cat) => {
-                    const catItems = MENU_ITEMS.filter((item) => item.category === cat.id);
+                    const catItems = itemsByCategory[cat.id] || [];
                     if (catItems.length === 0) return null;
 
                     return (
@@ -525,7 +585,17 @@ export function DriveThruModal() {
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                          {catItems.map((item) => renderItemCard(item))}
+                          {catItems.map((item) => (
+                            <DriveThruItemCard
+                              key={item.id}
+                              item={item}
+                              qtyInCart={cartQuantityMap[item.id] || 0}
+                              firstCartEntryId={cartEntriesMap[item.id]}
+                              onOpenCustomize={handleOpenCustomize}
+                              onQuickAdd={handleQuickAdd}
+                              onUpdateQty={handleUpdateQty}
+                            />
+                          ))}
                         </div>
                       </div>
                     );
@@ -537,7 +607,7 @@ export function DriveThruModal() {
 
           {/* CUSTOMIZE ITEM MODAL OVERLAY */}
           {customizingItem && (
-            <div className="fixed inset-0 z-60 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md">
+            <div className="fixed inset-0 z-60 flex items-center justify-center p-3 bg-black/90">
               <div className="relative w-full max-w-lg bg-[#17120F] rounded-2xl border-2 border-[#C9A45C] p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
                 <div className="flex items-start justify-between pb-3 border-b border-[#3A2920]">
                   <div className="flex items-center gap-3">
