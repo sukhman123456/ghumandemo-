@@ -53,38 +53,38 @@ export function Navbar() {
       <header
         className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
           scrolled
-            ? "glass-nav py-3 shadow-[0_10px_30px_rgba(23,18,15,0.85)] border-b border-[#C9A45C]/15"
-            : "bg-transparent py-4 sm:py-5 border-b border-transparent"
+            ? "glass-nav py-2.5 sm:py-3 shadow-[0_10px_30px_rgba(23,18,15,0.85)] border-b border-[#C9A45C]/15"
+            : "bg-transparent py-3 sm:py-5 border-b border-transparent"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-2 sm:px-6 lg:px-8">
           {/* Brand Logo with Food Truck circular emblem */}
           <a
             href="#home"
-            className="flex items-center gap-3 group shrink-0"
+            className="flex items-center gap-1.5 sm:gap-3 group shrink-0"
             aria-label="Ghumans Kitchen Express Home"
           >
-            <div className="relative size-10 sm:size-11 rounded-full group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
+            <div className="relative size-8 sm:size-11 rounded-full group-hover:scale-105 transition-transform flex items-center justify-center shrink-0">
               <img
                 src="/ghuman-logo.svg"
                 alt="Ghumans Kitchen Express Official Logo Badge"
                 className="size-full rounded-full object-cover shadow-[0_0_15px_rgba(201,164,92,0.45)] border border-[#D4AF67]/80"
               />
               <span
-                className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-[#16A34A] border-2 border-[#17120F] shadow-sm z-10"
+                className="absolute -bottom-0.5 -right-0.5 size-2 sm:size-3 rounded-full bg-[#16A34A] border-2 border-[#17120F] shadow-sm z-10"
                 title="100% Pure Vegetarian"
               />
             </div>
             <div className="flex flex-col">
               <span
-                className={`font-display text-base sm:text-lg font-black tracking-tight transition-colors leading-none ${
+                className={`font-display text-xs sm:text-lg font-black tracking-tight transition-colors leading-none ${
                   scrolled ? "text-[#F3EBDD] group-hover:text-[#C9A45C]" : "text-[#1C1815] group-hover:text-[#C9A45C]"
                 }`}
               >
                 GHUMANS
               </span>
               <span
-                className={`text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.24em] mt-1 transition-colors ${
+                className={`text-[7px] sm:text-[10px] uppercase font-bold tracking-[0.16em] sm:tracking-[0.24em] mt-0.5 sm:mt-1 transition-colors ${
                   scrolled ? "text-[#C9A45C]" : "text-[#6E645C]"
                 }`}
               >
@@ -124,8 +124,8 @@ export function Navbar() {
           </nav>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            {/* Quick Call */}
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
+            {/* Quick Call (Desktop / Tablet) */}
             <a
               href="tel:+919501201215"
               className={`hidden md:inline-flex items-center gap-2 text-xs font-semibold py-2 px-3.5 rounded-full transition-all border ${
@@ -138,13 +138,13 @@ export function Navbar() {
               <span>095012 01215</span>
             </a>
 
-            {/* Drive-Thru CTA - Visible on sm+ screens to preserve mobile header space */}
+            {/* Drive-Thru CTA - Always visible on mobile and desktop */}
             <button
               type="button"
               onClick={() => openDriveThru()}
-              className="group whitespace-nowrap hidden sm:inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] border border-[#E8C88B]/60 hover:border-[#F3EBDD] px-3.5 sm:px-4.5 py-2 sm:py-2.5 text-xs font-black uppercase tracking-wider text-[#FFFDF8] shadow-[0_2px_14px_rgba(139,0,0,0.5)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.6)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="group whitespace-nowrap inline-flex items-center justify-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] border border-[#E8C88B]/60 hover:border-[#F3EBDD] px-2 sm:px-4.5 py-1.5 sm:py-2.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#FFFDF8] shadow-[0_2px_14px_rgba(139,0,0,0.5)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.6)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              <span className="text-sm group-hover:scale-110 transition-transform">🚗</span>
+              <span className="text-xs sm:text-sm group-hover:scale-110 transition-transform">🚗</span>
               <span className="tracking-wide">DRIVE-THRU</span>
             </button>
 
@@ -152,12 +152,12 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => openOrderDrawer()}
-              className="whitespace-nowrap inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF67] via-[#E8C88B] to-[#C9A45C] hover:brightness-105 border border-[#F3EBDD]/40 px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs font-black uppercase tracking-wider text-[#1C1815] shadow-[0_2px_14px_rgba(212,175,103,0.35)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="whitespace-nowrap inline-flex items-center justify-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#D4AF67] via-[#E8C88B] to-[#C9A45C] hover:brightness-105 border border-[#F3EBDD]/40 px-2 sm:px-5 py-1.5 sm:py-2.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#1C1815] shadow-[0_2px_14px_rgba(212,175,103,0.35)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              <ShoppingBag className="size-3.5 text-[#1C1815]" />
+              <ShoppingBag className="size-3 sm:size-3.5 text-[#1C1815]" />
               <span>ORDER NOW</span>
               {totalCount > 0 && (
-                <span className="inline-flex size-4 sm:size-5 items-center justify-center rounded-full bg-[#17120F] text-[9px] sm:text-[10px] font-extrabold text-[#C9A45C]">
+                <span className="inline-flex size-3.5 sm:size-5 items-center justify-center rounded-full bg-[#17120F] text-[8px] sm:text-[10px] font-extrabold text-[#C9A45C]">
                   {totalCount}
                 </span>
               )}
@@ -168,7 +168,7 @@ export function Navbar() {
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open navigation menu"
-              className={`xl:hidden inline-flex size-9 sm:size-10 items-center justify-center rounded border transition-colors ${
+              className={`xl:hidden inline-flex size-8 sm:size-10 items-center justify-center rounded border transition-colors shrink-0 ${
                 scrolled
                   ? "border-[#3A2920] bg-[#201814] text-[#F3EBDD] hover:text-[#C9A45C]"
                   : "border-[#D4AF67]/60 bg-white/70 text-[#1C1815] hover:text-[#C9A45C]"
