@@ -76,22 +76,30 @@ export function OrderDrawer() {
             </div>
           ) : (
             <>
-              {order.map(({ item, quantity }) => (
+              {order.map(({ id, item, size, price, quantity }) => (
                 <div
-                  key={item.id}
+                  key={id}
                   className="flex items-center gap-3.5 p-3.5 rounded-xl bg-[#201814] border border-[#3A2920] justify-between"
                 >
                   <img
                     src={item.image}
                     alt={item.name}
                     className="size-14 rounded-lg object-cover bg-[#17120F] shrink-0"
+                    onError={(e) => {
+                      if (item.fallbackImage) e.currentTarget.src = item.fallbackImage;
+                    }}
                   />
                   <div className="flex-1 min-w-0">
                     <h4 className="font-display font-bold text-sm text-[#F3EBDD] truncate">
                       {item.name}
                     </h4>
+                    {size && (
+                      <span className="text-[10px] font-bold text-[#17120F] bg-[#C9A45C] px-1.5 py-0.2 rounded inline-block mt-0.5">
+                        {size}
+                      </span>
+                    )}
                     <span className="text-xs font-semibold text-[#C9A45C] block mt-0.5">
-                      ₹{item.price} each
+                      ₹{price} each
                     </span>
                   </div>
 
@@ -100,7 +108,7 @@ export function OrderDrawer() {
                     <div className="flex items-center rounded-lg border border-[#3A2920] bg-[#17120F]">
                       <button
                         type="button"
-                        onClick={() => updateQuantity(item.id, -1)}
+                        onClick={() => updateQuantity(id, -1)}
                         aria-label={`Decrease quantity of ${item.name}`}
                         className="p-1.5 text-[#D1C2B0] hover:text-[#C9A45C]"
                       >
@@ -111,7 +119,7 @@ export function OrderDrawer() {
                       </span>
                       <button
                         type="button"
-                        onClick={() => updateQuantity(item.id, 1)}
+                        onClick={() => updateQuantity(id, 1)}
                         aria-label={`Increase quantity of ${item.name}`}
                         className="p-1.5 text-[#D1C2B0] hover:text-[#C9A45C]"
                       >
@@ -121,7 +129,7 @@ export function OrderDrawer() {
 
                     <button
                       type="button"
-                      onClick={() => removeFromOrder(item.id)}
+                      onClick={() => removeFromOrder(id)}
                       aria-label={`Remove ${item.name}`}
                       className="p-1.5 text-[#D1C2B0] hover:text-red-400"
                     >

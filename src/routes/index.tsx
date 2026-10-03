@@ -1,46 +1,44 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { OrderProvider } from "@/components/food-truck/OrderContext";
-import { Header } from "@/components/digital-menu/Header";
-import { HeroSection } from "@/components/digital-menu/HeroSection";
-import { DealsSection } from "@/components/digital-menu/DealsSection";
-import { MenuSystem } from "@/components/digital-menu/MenuSystem";
-import { PizzaTruckPromo } from "@/components/digital-menu/PizzaTruckPromo";
-import { PaymentUPISection } from "@/components/digital-menu/PaymentUPISection";
-import { AboutSection } from "@/components/digital-menu/AboutSection";
-import { Footer } from "@/components/digital-menu/Footer";
-import { CartDrawer } from "@/components/digital-menu/CartDrawer";
-import { FloatingBar } from "@/components/digital-menu/FloatingBar";
+import { Navbar } from "@/components/food-truck/Navbar";
+import { GlyphHero } from "@/components/food-truck/GlyphHero";
+import { LuxuryScrollEnhancements } from "@/components/food-truck/LuxuryScrollEnhancements";
+import { TruckScrollJourney } from "@/components/food-truck/TruckScrollJourney";
+import { BrandStory } from "@/components/food-truck/BrandStory";
+import { FromTheTruck } from "@/components/food-truck/FromTheTruck";
+import { CravingSelector } from "@/components/food-truck/CravingSelector";
+import { SignatureMenu } from "@/components/food-truck/SignatureMenu";
+import { ExperiencePoints } from "@/components/food-truck/ExperiencePoints";
+import { FoodGallery } from "@/components/food-truck/FoodGallery";
+import { FindTheTruck } from "@/components/food-truck/FindTheTruck";
+import { OrderCTA } from "@/components/food-truck/OrderCTA";
+import { ContactSection } from "@/components/food-truck/ContactSection";
+import { GoodFoodGoodVibes } from "@/components/food-truck/GoodFoodGoodVibes";
+import { FloatingActions } from "@/components/food-truck/FloatingActions";
+import { Footer } from "@/components/food-truck/Footer";
+import { OrderDrawer } from "@/components/food-truck/OrderDrawer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      {
-        title:
-          "Ghumans Kitchen Express | Where Cravings Get Expressed | Premium Pure Veg Digital Menu",
-      },
+      { title: "Ghumans Kitchen Express | Pure Veg Food Truck & Dining Experience" },
       {
         name: "description",
         content:
-          "Official digital menu of Ghumans Kitchen Express in Dhilwan, Punjab. Order stone-baked pizzas, crispy aloo & paneer burgers, tandoori wraps, loaded fries and thick milkshakes directly on WhatsApp.",
+          "Modern Pure Vegetarian Food Truck & Restaurant Experience in Dhilwan, Punjab on GT Road next to Toll Plaza. Enjoy freshly tossed pizzas, gourmet burgers, paneer wraps, loaded fries & thick shakes.",
       },
-      {
-        property: "og:title",
-        content: "Ghumans Kitchen Express | Where Cravings Get Expressed",
-      },
+      { property: "og:title", content: "Ghumans Kitchen Express | Food on Wheels" },
       {
         property: "og:description",
         content:
-          "Where Cravings Get Expressed. Double-decker 100% pure vegetarian fast-food on Grand Trunk Road, Dhilwan, Punjab.",
+          "Good Food. Happier People. Double-decker pure vegetarian food truck on Grand Trunk Road, Dhilwan, Punjab.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "/hero-fastfood-feast.jpg" },
+      { property: "og:image", content: "/ghumans-truck.jpg" },
       { property: "og:url", content: "http://localhost:8080/" },
       { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:title",
-        content: "Ghumans Kitchen Express — Digital Menu",
-      },
-      { name: "twitter:image", content: "/hero-fastfood-feast.jpg" },
+      { name: "twitter:title", content: "Ghumans Kitchen Express" },
+      { name: "twitter:image", content: "/ghumans-truck.jpg" },
     ],
     links: [{ rel: "canonical", href: "/" }],
     scripts: [
@@ -50,63 +48,104 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "FastFoodRestaurant",
           name: "Ghumans Kitchen Express",
-          telephone: "+917707813600",
+          telephone: "+919501201215",
           address: {
             "@type": "PostalAddress",
-            streetAddress: "Grand Trunk Road, Next to Toll Plaza",
+            streetAddress: "Jalandhar to Amritsar Road, Grand Trunk Road, Next to Toll Plaza",
             addressLocality: "Dhilwan",
             addressRegion: "Punjab",
             postalCode: "144804",
             addressCountry: "IN",
           },
-          servesCuisine: "Pure Vegetarian Fast Food, Pizza, Burgers, Shakes",
-          priceRange: "₹50 - ₹600",
+          servesCuisine: "Vegetarian Fast Food",
+          priceRange: "₹₹",
           openingHours: "Mo-Su 11:00-22:00",
-          image: "/hero-fastfood-feast.jpg",
+          image: "/ghumans-truck.jpg",
         }),
       },
     ],
   }),
-  component: DigitalMenuApp,
+  component: FoodTruckApp,
 });
 
-function DigitalMenuApp() {
+function FoodTruckApp() {
   return (
     <OrderProvider>
-      <div className="min-h-screen bg-warm-canvas text-[#1C1917] flex flex-col font-sans selection:bg-[#F59E0B] selection:text-[#1C1917]">
-        {/* 1. Sticky Responsive Header with Cart & Navigation */}
-        <Header />
+      {/* Luxury Cinematic Enhancements: Subtle film grain, champagne scroll spine & ambient light sweep */}
+      <LuxuryScrollEnhancements />
 
-        {/* Main Content Area */}
-        <main className="flex-1">
-          {/* 2. Hero Section: Brand Headline, Tagline, Visual Food Feast */}
-          <HeroSection />
+      {/* Sticky navigation */}
+      <Navbar />
 
-          {/* 3. Promotional Deals & Combos: Buy 4 Pizza Get 1 Free & 4 Meal Deals */}
-          <DealsSection />
+      {/* Main page content sections */}
+      <main className="min-h-screen bg-[#17120F] text-[#F3EBDD] relative">
+        {/* 1. Main Home: Full Scroll-Animated Glyph Portal Hero */}
+        <GlyphHero />
 
-          {/* 4. Complete Interactive Digital Menu with Categories & Cards */}
-          <MenuSystem />
+        {/* 2. Innovative Truck Scroll Journey */}
+        <div className="section-reveal">
+          <TruckScrollJourney />
+        </div>
 
-          {/* 5. Bring A Pizza Truck To Your Party Catering Section */}
-          <PizzaTruckPromo />
+        {/* 3. Brand Story: More Than Just Food */}
+        <div className="section-reveal">
+          <BrandStory />
+        </div>
 
-          {/* 6. Pay Online UPI Section with 9501201215-1@okbizaxis */}
-          <PaymentUPISection />
+        {/* 4. Interactive "From The Truck" Section */}
+        <div className="section-reveal">
+          <FromTheTruck />
+        </div>
 
-          {/* 7. About Ghumans Kitchen Express & Highway Location */}
-          <AboutSection />
-        </main>
+        {/* 5. What's Your Craving? Interactive Selector */}
+        <div className="section-reveal">
+          <CravingSelector />
+        </div>
 
-        {/* 8. Footer with Contact, UPI, 100% Veg Badge & Social Links */}
-        <Footer />
+        {/* 6. Signature Menu & Interactive Food Cards (Updated with Full Digital Menu) */}
+        <div className="section-reveal">
+          <SignatureMenu />
+        </div>
 
-        {/* 9. Interactive Cart Drawer */}
-        <CartDrawer />
+        {/* 7. Experience Points: Good Food. Good Vibes. */}
+        <div className="section-reveal">
+          <ExperiencePoints />
+        </div>
 
-        {/* 10. Floating Actions: WhatsApp Order, Instagram @ghumanskitchenexpress, Mobile Cart */}
-        <FloatingBar />
-      </div>
+        {/* 8. Editorial Food & Truck Gallery */}
+        <div className="section-reveal">
+          <FoodGallery />
+        </div>
+
+        {/* 9. Where's The Truck? Stylized Route Map */}
+        <div className="section-reveal">
+          <FindTheTruck />
+        </div>
+
+        {/* 10. Good Food. Good Vibes. Full-Width Section */}
+        <div className="section-reveal">
+          <GoodFoodGoodVibes />
+        </div>
+
+        {/* 11. Order CTA Banner */}
+        <div className="section-reveal">
+          <OrderCTA />
+        </div>
+
+        {/* 12. Contact & Location Information */}
+        <div className="section-reveal">
+          <ContactSection />
+        </div>
+      </main>
+
+      {/* Footer */}
+      <Footer />
+
+      {/* Interactive Order Drawer & Cart */}
+      <OrderDrawer />
+
+      {/* Floating Actions: WhatsApp & Order Buttons */}
+      <FloatingActions />
     </OrderProvider>
   );
 }
