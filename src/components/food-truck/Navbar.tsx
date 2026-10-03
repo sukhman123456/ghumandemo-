@@ -138,11 +138,11 @@ export function Navbar() {
               <span>095012 01215</span>
             </a>
 
-            {/* Drive-Thru CTA */}
+            {/* Drive-Thru CTA - Visible on sm+ screens to preserve mobile header space */}
             <button
               type="button"
               onClick={() => openDriveThru()}
-              className="group whitespace-nowrap inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] border border-[#E8C88B]/60 hover:border-[#F3EBDD] px-3.5 sm:px-4.5 py-2 sm:py-2.5 text-xs font-black uppercase tracking-wider text-[#FFFDF8] shadow-[0_2px_14px_rgba(139,0,0,0.5)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.6)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="group whitespace-nowrap hidden sm:inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#8B0000] via-[#A81B1E] to-[#7B0000] hover:from-[#A81B1E] hover:to-[#8B0000] border border-[#E8C88B]/60 hover:border-[#F3EBDD] px-3.5 sm:px-4.5 py-2 sm:py-2.5 text-xs font-black uppercase tracking-wider text-[#FFFDF8] shadow-[0_2px_14px_rgba(139,0,0,0.5)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.6)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
               <span className="text-sm group-hover:scale-110 transition-transform">🚗</span>
               <span className="tracking-wide">DRIVE-THRU</span>
