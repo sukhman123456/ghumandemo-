@@ -54,7 +54,7 @@ export function SignatureMenu() {
             >
               <span className="text-base group-hover:scale-110 transition-transform">🚗</span>
               <span>DRIVE-THRU</span>
-              <span className="bg-yellow-400 text-black text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-normal">50% Advance</span>
+              <span className="bg-yellow-400 text-black text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-normal">Pick Up Fresh</span>
             </button>
 
             <button
@@ -374,7 +374,7 @@ function FoodItemCard({ item }: { item: MenuItem }) {
               onClick={() => openDriveThru(item)}
               className="w-full py-1.5 rounded-lg font-bold text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 bg-[#DC2626]/20 hover:bg-[#DC2626] text-[#FFA8A8] hover:text-white border border-[#DC2626]/40 transition-all"
             >
-              <span>🚗</span> Order via Drive-Thru (50% Advance)
+              <span>🚗</span> Order via Drive-Thru (Pick Up Fresh)
             </button>
           </>
         ) : (

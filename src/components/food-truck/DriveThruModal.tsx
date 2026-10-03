@@ -29,7 +29,7 @@ import {
 } from "./OrderContext";
 import { MENU_CATEGORIES, MENU_ITEMS, MenuItem, SizeOption } from "./menuData";
 
-type DriveThruStep = "welcome" | "menu" | "cart" | "details" | "payment" | "confirmed";
+type DriveThruStep = "welcome" | "menu" | "cart" | "confirmed";
 
 const AVAILABLE_ADDONS: AddonOption[] = [
   { name: "Extra Melted Cheese", price: 30 },
@@ -80,7 +80,6 @@ export function DriveThruModal() {
   });
 
   const [formError, setFormError] = useState("");
-  const [copiedUpi, setCopiedUpi] = useState(false);
   const [generatedOrderNo, setGeneratedOrderNo] = useState("");
 
   // When opening, if items already exist, start at menu or welcome
@@ -132,13 +131,7 @@ export function DriveThruModal() {
     });
   };
 
-  const handleCopyUpi = () => {
-    navigator.clipboard.writeText(RESTAURANT_UPI_ID);
-    setCopiedUpi(true);
-    setTimeout(() => setCopiedUpi(false), 2000);
-  };
-
-  const handleProceedToPayment = (e: React.FormEvent) => {
+  const handleSubmitToWhatsApp = (e: React.FormEvent) => {
     e.preventDefault();
     if (!customerDetails.name.trim()) {
       setFormError("Please enter your name.");
@@ -153,12 +146,14 @@ export function DriveThruModal() {
       return;
     }
     setFormError("");
-    setStep("payment");
-  };
-
-  const handleConfirmOrder = () => {
     const orderNo = `#GKE-${Math.floor(1000 + Math.random() * 9000)}`;
     setGeneratedOrderNo(orderNo);
+
+    // Open WhatsApp directly with full order and payment summary
+    const url = getDriveThruWhatsAppUrl(customerDetails, orderNo);
+    window.open(url, "_blank");
+
+    // Move to confirmation step on website
     setStep("confirmed");
   };
 
@@ -185,7 +180,7 @@ export function DriveThruModal() {
                 </span>
               </div>
               <span className="text-xs text-[#FDE68A] font-semibold mt-0.5 block">
-                Grand Trunk Road, Dhilwan · 50% Advance · Pick Up Hot & Fresh
+                Grand Trunk Road, Dhilwan · Order Ahead · Pick Up Hot & Fresh
               </span>
             </div>
           </div>
@@ -239,23 +234,23 @@ export function DriveThruModal() {
               <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 w-full text-left">
                 <div className="p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920]">
                   <span className="text-[10px] font-black uppercase text-[#C9A45C] block">Step 01</span>
-                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">ORDER AHEAD</span>
+                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">SELECT FOOD</span>
                   <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Select burgers, wraps, pizza & shakes</p>
                 </div>
                 <div className="p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920]">
                   <span className="text-[10px] font-black uppercase text-[#C9A45C] block">Step 02</span>
-                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">50% ADVANCE</span>
-                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Pay 50% via UPI to confirm kitchen prep</p>
+                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">CUSTOMIZE</span>
+                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Pick sizes & add cheese burst or dips</p>
                 </div>
                 <div className="p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920]">
                   <span className="text-[10px] font-black uppercase text-[#C9A45C] block">Step 03</span>
-                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">DRIVE IN</span>
-                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Pull up at GT Road Dhilwan food truck</p>
+                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">VEHICLE DETAILS</span>
+                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Enter vehicle number & pickup time</p>
                 </div>
                 <div className="p-3.5 rounded-2xl bg-[#201814] border border-[#3A2920]">
                   <span className="text-[10px] font-black uppercase text-[#C9A45C] block">Step 04</span>
-                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">PAY REMAINING 50%</span>
-                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Collect hot food & pay remaining 50%</p>
+                  <span className="text-sm font-bold text-[#F3EBDD] block mt-0.5">ORDER ON WHATSAPP</span>
+                  <p className="text-[11px] text-[#D1C2B0]/80 mt-1">Confirm details & payment via WhatsApp</p>
                 </div>
               </div>
 
@@ -623,291 +618,191 @@ export function DriveThruModal() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setStep("menu")}
-                      className="text-xs text-[#D1C2B0] hover:text-[#F3EBDD] flex items-center gap-1"
-                    >
-                      <ArrowLeft className="size-3.5" /> Back to Menu
-                    </button>
+                  {/* Pickup & Vehicle Details Form - Directly on this screen */}
+                  <form onSubmit={handleSubmitToWhatsApp} className="mt-6 pt-6 border-t border-[#3A2920] space-y-4">
+                    <div className="border-b border-[#3A2920] pb-2 flex items-center justify-between">
+                      <div>
+                        <h4 className="font-display font-black text-base sm:text-lg text-[#F3EBDD] uppercase">
+                          🚗 ENTER PICKUP & VEHICLE DETAILS
+                        </h4>
+                        <p className="text-xs text-[#D1C2B0] mt-0.5">
+                          Enter your details so our kitchen can prepare your food fresh for your arrival.
+                        </p>
+                      </div>
+                    </div>
 
-                    <button
-                      type="button"
-                      onClick={() => setStep("details")}
-                      className="px-6 py-3 rounded-xl bg-[#C9A45C] hover:bg-[#D8B772] text-[#17120F] font-black text-xs uppercase tracking-wider shadow flex items-center gap-2"
-                    >
-                      <span>ENTER PICKUP & VEHICLE DETAILS</span>
-                      <ArrowRight className="size-4" />
-                    </button>
-                  </div>
+                    {formError && (
+                      <div className="p-3 rounded-xl bg-red-950/80 border border-red-500 text-xs text-red-200 flex items-center gap-2">
+                        <ShieldAlert className="size-4 shrink-0 text-red-400" />
+                        <span>{formError}</span>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      <div>
+                        <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
+                          Your Name *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Full Name"
+                          value={customerDetails.name}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, name: e.target.value })}
+                          className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
+                          Mobile Number *
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          placeholder="10-digit Phone Number"
+                          value={customerDetails.phone}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, phone: e.target.value })}
+                          className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      <div>
+                        <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
+                          Preferred Pickup Date *
+                        </label>
+                        <select
+                          value={customerDetails.pickupDate}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, pickupDate: e.target.value })}
+                          className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none"
+                        >
+                          <option value="Today">Today</option>
+                          <option value="Tomorrow">Tomorrow</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
+                          Preferred Pickup Time *
+                        </label>
+                        <select
+                          value={customerDetails.pickupTime}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, pickupTime: e.target.value })}
+                          className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none"
+                        >
+                          <option value="In 15-20 Mins">In 15-20 Mins (Express Prep)</option>
+                          <option value="In 30-45 Mins">In 30-45 Mins</option>
+                          <option value="In 1 Hour">In 1 Hour</option>
+                          <option value="This Evening (7:00 PM)">This Evening (7:00 PM)</option>
+                          <option value="Dinner Time (8:30 PM)">Dinner Time (8:30 PM)</option>
+                          <option value="Late Night (9:30 PM)">Late Night (9:30 PM)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Vehicle Type & Number */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      <div>
+                        <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
+                          Vehicle Type *
+                        </label>
+                        <div className="grid grid-cols-3 gap-2">
+                          {(["Car", "Bike", "Other"] as const).map((type) => (
+                            <button
+                              key={type}
+                              type="button"
+                              onClick={() => setCustomerDetails({ ...customerDetails, vehicleType: type })}
+                              className={`p-2 rounded-xl border text-xs font-bold transition-all ${
+                                customerDetails.vehicleType === type
+                                  ? "bg-[#C9A45C] text-[#17120F] border-[#C9A45C]"
+                                  : "bg-[#201814] text-[#D1C2B0] border-[#3A2920]"
+                              }`}
+                            >
+                              {type}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
+                          Vehicle Registration Number *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. PB08-AB-1234"
+                          value={customerDetails.vehicleNumber}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, vehicleNumber: e.target.value.toUpperCase() })}
+                          className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] uppercase font-mono focus:border-[#C9A45C] outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
+                        Special Instructions (Optional)
+                      </label>
+                      <textarea
+                        rows={2}
+                        placeholder="e.g. Please keep the order ready when I arrive at the Toll Plaza..."
+                        value={customerDetails.instructions}
+                        onChange={(e) => setCustomerDetails({ ...customerDetails, instructions: e.target.value })}
+                        className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none resize-none"
+                      />
+                    </div>
+
+                    {/* WhatsApp & Payment Notice */}
+                    <div className="p-3.5 rounded-2xl bg-[#201814] border border-[#25D366]/40 flex items-start gap-3">
+                      <div className="size-8 rounded-xl bg-[#25D366]/20 text-[#25D366] flex items-center justify-center shrink-0 mt-0.5">
+                        <MessageSquare className="size-4" />
+                      </div>
+                      <div className="text-xs">
+                        <span className="font-bold text-[#F3EBDD] block">
+                          Payment & Verification Handled on WhatsApp
+                        </span>
+                        <span className="text-[#D1C2B0] text-[11px] block mt-0.5 leading-relaxed">
+                          Submitting this order sends all details to <strong>Ghumans Kitchen Express (+91 {RESTAURANT_PHONE})</strong>. The restaurant owner will send payment details / QR code on WhatsApp to verify the 50% advance (₹{driveThruAdvanceAmount}). Remaining ₹{driveThruRemainingAmount} payable at pickup.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3">
+                      <button
+                        type="button"
+                        onClick={() => setStep("menu")}
+                        className="w-full sm:w-auto text-xs text-[#D1C2B0] hover:text-[#F3EBDD] flex items-center justify-center gap-1.5 py-2.5"
+                      >
+                        <ArrowLeft className="size-3.5" /> Back to Menu / Add More
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+                      >
+                        <MessageSquare className="size-4" />
+                        <span>SUBMIT ORDER ON WHATSAPP</span>
+                      </button>
+                    </div>
+                  </form>
                 </>
               )}
             </div>
           )}
 
-          {/* STEP 4: PICKUP & VEHICLE DETAILS */}
-          {step === "details" && (
-            <form onSubmit={handleProceedToPayment} className="space-y-4 max-w-xl mx-auto">
-              <div className="border-b border-[#3A2920] pb-3">
-                <h3 className="font-display font-black text-xl text-[#F3EBDD]">
-                  CUSTOMER & VEHICLE DETAILS
-                </h3>
-                <p className="text-xs text-[#D1C2B0] mt-0.5">
-                  We use your vehicle number to have your order ready at the drive-thru window.
-                </p>
-              </div>
-
-              {formError && (
-                <div className="p-2.5 rounded-lg bg-red-950/80 border border-red-500 text-xs text-red-200">
-                  {formError}
-                </div>
-              )}
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div>
-                  <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
-                    Your Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Full Name"
-                    value={customerDetails.name}
-                    onChange={(e) => setCustomerDetails({ ...customerDetails, name: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
-                    Mobile Number *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    placeholder="10-digit Phone Number"
-                    value={customerDetails.phone}
-                    onChange={(e) => setCustomerDetails({ ...customerDetails, phone: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div>
-                  <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
-                    Preferred Pickup Date *
-                  </label>
-                  <select
-                    value={customerDetails.pickupDate}
-                    onChange={(e) => setCustomerDetails({ ...customerDetails, pickupDate: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none"
-                  >
-                    <option value="Today">Today</option>
-                    <option value="Tomorrow">Tomorrow</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
-                    Preferred Pickup Time *
-                  </label>
-                  <select
-                    value={customerDetails.pickupTime}
-                    onChange={(e) => setCustomerDetails({ ...customerDetails, pickupTime: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none"
-                  >
-                    <option value="In 15-20 Mins">In 15-20 Mins (Express Prep)</option>
-                    <option value="In 30-45 Mins">In 30-45 Mins</option>
-                    <option value="In 1 Hour">In 1 Hour</option>
-                    <option value="This Evening (7:00 PM)">This Evening (7:00 PM)</option>
-                    <option value="Dinner Time (8:30 PM)">Dinner Time (8:30 PM)</option>
-                    <option value="Late Night (9:30 PM)">Late Night (9:30 PM)</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Vehicle Type & Number */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div>
-                  <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
-                    Vehicle Type *
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(["Car", "Bike", "Other"] as const).map((type) => (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => setCustomerDetails({ ...customerDetails, vehicleType: type })}
-                        className={`p-2 rounded-xl border text-xs font-bold transition-all ${
-                          customerDetails.vehicleType === type
-                            ? "bg-[#C9A45C] text-[#17120F] border-[#C9A45C]"
-                            : "bg-[#201814] text-[#D1C2B0] border-[#3A2920]"
-                        }`}
-                      >
-                        {type}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
-                    Vehicle Registration Number *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. PB08-AB-1234"
-                    value={customerDetails.vehicleNumber}
-                    onChange={(e) => setCustomerDetails({ ...customerDetails, vehicleNumber: e.target.value.toUpperCase() })}
-                    className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] uppercase font-mono focus:border-[#C9A45C] outline-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-[#D1C2B0] block mb-1">
-                  Special Instructions (Optional)
-                </label>
-                <textarea
-                  rows={2}
-                  placeholder="e.g. Please keep the order ready when I arrive at the Toll Plaza..."
-                  value={customerDetails.instructions}
-                  onChange={(e) => setCustomerDetails({ ...customerDetails, instructions: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-[#201814] border border-[#3A2920] text-xs text-[#F3EBDD] focus:border-[#C9A45C] outline-none resize-none"
-                />
-              </div>
-
-              <div className="flex items-center justify-between pt-3">
-                <button
-                  type="button"
-                  onClick={() => setStep("cart")}
-                  className="text-xs text-[#D1C2B0] hover:text-[#F3EBDD] flex items-center gap-1"
-                >
-                  <ArrowLeft className="size-3.5" /> Back to Cart
-                </button>
-
-                <button
-                  type="submit"
-                  className="px-6 py-3 rounded-xl bg-[#C9A45C] hover:bg-[#D8B772] text-[#17120F] font-black text-xs uppercase tracking-wider shadow"
-                >
-                  PROCEED TO 50% ADVANCE PAYMENT
-                </button>
-              </div>
-            </form>
-          )}
-
-          {/* STEP 5: 50% ADVANCE PAYMENT FLOW */}
-          {step === "payment" && (
-            <div className="space-y-6 max-w-xl mx-auto">
-              <div className="border-b border-[#3A2920] pb-3 text-center">
-                <span className="text-[10px] font-black uppercase text-[#F59E0B] tracking-widest block">
-                  PAYMENT SUMMARY
-                </span>
-                <h3 className="font-display font-black text-2xl text-[#F3EBDD]">
-                  50% ADVANCE PAYMENT
-                </h3>
-              </div>
-
-              {/* Dynamic 50% / 50% Split Breakdown */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-4 rounded-2xl bg-[#7F1D1D]/30 border-2 border-[#F59E0B] text-center">
-                  <span className="text-[10px] font-black uppercase text-[#FDE68A] block">
-                    PAY NOW (50% ADVANCE)
-                  </span>
-                  <span className="text-3xl font-black text-[#F59E0B] block mt-1">
-                    ₹{driveThruAdvanceAmount}
-                  </span>
-                  <span className="text-[10px] text-[#D1C2B0] block mt-1">
-                    Required to confirm order
-                  </span>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-[#201814] border border-[#3A2920] text-center">
-                  <span className="text-[10px] font-black uppercase text-[#D1C2B0] block">
-                    PAY AT PICKUP (50%)
-                  </span>
-                  <span className="text-3xl font-black text-[#FFFDF8] block mt-1">
-                    ₹{driveThruRemainingAmount}
-                  </span>
-                  <span className="text-[10px] text-[#D1C2B0] block mt-1">
-                    Cash / UPI at Drive-Thru
-                  </span>
-                </div>
-              </div>
-
-              {/* Prominent explanation */}
-              <div className="p-4 rounded-2xl bg-[#201814] border border-[#3A2920] space-y-2 text-xs text-[#D1C2B0]">
-                <p className="font-bold text-[#F3EBDD]">
-                  "To confirm your Drive-Thru order, a 50% advance payment is required."
-                </p>
-                <p>
-                  "Pay the remaining 50% when you collect your order from the Drive-Thru."
-                </p>
-                <p className="text-[11px] text-[#FDE68A] italic">
-                  *Your order will be confirmed after the restaurant verifies the advance payment.
-                </p>
-              </div>
-
-              {/* UPI ID Box */}
-              <div className="p-4 rounded-2xl bg-[#201814] border-2 border-[#C9A45C]">
-                <span className="text-[10px] font-black uppercase text-[#C9A45C] tracking-wider block">
-                  PAY ADVANCE VIA UPI ID:
-                </span>
-                <div className="mt-2 flex items-center justify-between gap-2 bg-[#17120F] p-3 rounded-xl border border-[#3A2920]">
-                  <code className="font-mono text-sm font-black text-[#F3EBDD] select-all">
-                    {RESTAURANT_UPI_ID}
-                  </code>
-                  <button
-                    type="button"
-                    onClick={handleCopyUpi}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                      copiedUpi ? "bg-[#16A34A] text-white" : "bg-[#C9A45C] text-[#17120F]"
-                    }`}
-                  >
-                    {copiedUpi ? "COPIED!" : "COPY UPI ID"}
-                  </button>
-                </div>
-                <span className="text-[11px] text-[#D1C2B0] mt-2 block">
-                  Amount: <strong className="text-[#F59E0B]">₹{driveThruAdvanceAmount}</strong> (Use GPay, PhonePe, Paytm or BHIM)
-                </span>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="space-y-2 pt-2">
-                <button
-                  type="button"
-                  onClick={handleConfirmOrder}
-                  className="w-full py-3.5 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-sm uppercase tracking-wider shadow-lg flex items-center justify-center gap-2"
-                >
-                  <CheckCircle2 className="size-4" />
-                  I HAVE PAID 50% ADVANCE (SUBMIT ORDER)
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setStep("details")}
-                  className="w-full py-2 text-xs text-[#D1C2B0] hover:text-[#F3EBDD]"
-                >
-                  ← Edit Pickup & Vehicle Details
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 6: ORDER CONFIRMED & STATUS PROGRESS */}
+          {/* STEP 5: ORDER SENT ON WHATSAPP & CONFIRMATION */}
           {step === "confirmed" && (
             <div className="space-y-6 max-w-xl mx-auto py-4">
               <div className="text-center">
-                <div className="size-16 rounded-full bg-[#16A34A]/20 border-2 border-[#16A34A] flex items-center justify-center mx-auto mb-3 text-[#16A34A]">
-                  <CheckCircle2 className="size-8" />
+                <div className="size-16 rounded-full bg-[#25D366]/20 border-2 border-[#25D366] flex items-center justify-center mx-auto mb-3 text-[#25D366]">
+                  <MessageSquare className="size-8" />
                 </div>
-                <span className="text-xs font-black uppercase text-[#16A34A] tracking-widest block">
-                  ORDER SUBMITTED SUCCESSFULLY
+                <span className="text-xs font-black uppercase text-[#25D366] tracking-widest block">
+                  ORDER SUBMITTED TO WHATSAPP
                 </span>
-                <h3 className="font-display font-black text-2xl sm:text-3xl text-[#F3EBDD]">
+                <h3 className="font-display font-black text-2xl sm:text-3xl text-[#F3EBDD] mt-1">
                   DRIVE-THRU ORDER RECEIVED
                 </h3>
                 <span className="inline-block mt-2 font-mono font-black text-base px-3 py-1 rounded-lg bg-[#201814] border border-[#C9A45C] text-[#C9A45C]">
@@ -915,54 +810,28 @@ export function DriveThruModal() {
                 </span>
               </div>
 
-              {/* Order Status Timeline */}
-              <div className="p-4 rounded-2xl bg-[#201814] border border-[#3A2920]">
-                <span className="text-[10px] font-black uppercase text-[#C9A45C] tracking-wider block mb-3">
-                  LIVE ORDER STATUS:
-                </span>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <span className="size-5 rounded-full bg-[#16A34A] text-white flex items-center justify-center text-[10px] font-bold">
-                      ✓
-                    </span>
-                    <span className="text-xs font-bold text-[#F3EBDD]">1. Order Received</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="size-5 rounded-full bg-[#F59E0B] text-[#17120F] flex items-center justify-center text-[10px] font-black animate-pulse">
-                      ●
-                    </span>
-                    <span className="text-xs font-bold text-[#F59E0B]">
-                      2. Advance Payment Verification (Pending Confirmation)
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3 opacity-40">
-                    <span className="size-5 rounded-full bg-[#3A2920] text-[#D1C2B0] flex items-center justify-center text-[10px]">
-                      3
-                    </span>
-                    <span className="text-xs text-[#D1C2B0]">3. Order Confirmed</span>
-                  </div>
-                  <div className="flex items-center gap-3 opacity-40">
-                    <span className="size-5 rounded-full bg-[#3A2920] text-[#D1C2B0] flex items-center justify-center text-[10px]">
-                      4
-                    </span>
-                    <span className="text-xs text-[#D1C2B0]">4. Preparing in Kitchen</span>
-                  </div>
-                  <div className="flex items-center gap-3 opacity-40">
-                    <span className="size-5 rounded-full bg-[#3A2920] text-[#D1C2B0] flex items-center justify-center text-[10px]">
-                      5
-                    </span>
-                    <span className="text-xs text-[#D1C2B0]">5. Ready for Drive-Thru Pickup</span>
-                  </div>
-                  <div className="flex items-center gap-3 opacity-40">
-                    <span className="size-5 rounded-full bg-[#3A2920] text-[#D1C2B0] flex items-center justify-center text-[10px]">
-                      6
-                    </span>
-                    <span className="text-xs text-[#D1C2B0]">6. Collected & Remaining Paid</span>
-                  </div>
+              {/* Notice that payment & prep are handled on WhatsApp */}
+              <div className="p-4 rounded-2xl bg-[#201814] border border-[#25D366]/40 space-y-2 text-xs">
+                <div className="flex items-center gap-2 text-[#25D366] font-bold">
+                  <CheckCircle2 className="size-4 shrink-0" />
+                  <span>WhatsApp Chat Dispatched Successfully!</span>
                 </div>
-
-                <div className="mt-4 p-2.5 rounded-xl bg-[#17120F] border border-[#3A2920] text-[11px] text-[#FDE68A]">
-                  "Your order will be confirmed after the restaurant verifies the advance payment."
+                <p className="text-[#D1C2B0] text-[11px] leading-relaxed">
+                  Your order details, vehicle number, and preferred pickup time have been formatted and sent to <strong>Ghumans Kitchen Express (+91 {RESTAURANT_PHONE})</strong>.
+                </p>
+                <div className="mt-2 p-3 rounded-xl bg-[#17120F] border border-[#3A2920] space-y-1.5 text-[11px]">
+                  <p className="text-[#FDE68A] font-bold">
+                    💬 Payment & Verification on WhatsApp:
+                  </p>
+                  <p className="text-[#D1C2B0]">
+                    1. Send the generated order message on WhatsApp.
+                  </p>
+                  <p className="text-[#D1C2B0]">
+                    2. Complete your 50% advance payment (₹{driveThruAdvanceAmount}) via UPI directly with the restaurant team in chat.
+                  </p>
+                  <p className="text-[#D1C2B0]">
+                    3. Drive in to collect your fresh food and pay the remaining 50% (₹{driveThruRemainingAmount}) at pickup!
+                  </p>
                 </div>
               </div>
 
@@ -989,8 +858,8 @@ export function DriveThruModal() {
                   <span className="font-bold text-[#F3EBDD]">₹{driveThruTotalPrice}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#16A34A] font-bold">50% Advance (Paid):</span>
-                  <span className="font-bold text-[#16A34A]">₹{driveThruAdvanceAmount}</span>
+                  <span className="text-[#25D366] font-bold">50% Advance (on WhatsApp):</span>
+                  <span className="font-bold text-[#25D366]">₹{driveThruAdvanceAmount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#F59E0B] font-bold">50% Remaining (At Pickup):</span>
@@ -998,7 +867,7 @@ export function DriveThruModal() {
                 </div>
               </div>
 
-              {/* WhatsApp Trigger Button */}
+              {/* WhatsApp Action Buttons */}
               <div className="space-y-2.5">
                 <a
                   href={getDriveThruWhatsAppUrl(customerDetails, generatedOrderNo)}
@@ -1007,7 +876,7 @@ export function DriveThruModal() {
                   className="w-full py-3.5 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-sm uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 text-center"
                 >
                   <MessageSquare className="size-4" />
-                  SEND ORDER TO WHATSAPP ({RESTAURANT_PHONE})
+                  OPEN WHATSAPP CHAT ({RESTAURANT_PHONE})
                 </a>
 
                 <button

@@ -311,10 +311,10 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
 
     msg += "--------------------\n\n";
     msg += `Order Total: ₹${driveThruTotalPrice}\n\n`;
-    msg += `50% Advance: ₹${driveThruAdvanceAmount}\n\n`;
+    msg += `50% Advance Required: ₹${driveThruAdvanceAmount}\n\n`;
     msg += `Remaining at Pickup: ₹${driveThruRemainingAmount}\n\n`;
     msg += "I have submitted my Drive-Thru order.\n\n";
-    msg += "Please confirm my order.\n\n";
+    msg += "Please confirm my order and send your payment details / UPI QR code to complete the 50% advance.\n\n";
     msg += "Thank you,\nGhumans Kitchen Express";
 
     return `https://wa.me/${RESTAURANT_WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;

@@ -31,7 +31,7 @@ export function FloatingActions() {
             DRIVE-THRU
           </span>
           <span className="text-[9px] font-bold text-white/90">
-            50% Advance · Pick Up
+            Order Ahead · Pick Up
           </span>
         </div>
         {driveThruTotalCount > 0 && (
