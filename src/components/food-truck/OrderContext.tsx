@@ -1,67 +1,132 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { MenuItem } from "./menuData";
 
-export interface OrderItem {
-  item: MenuItem;
+export interface CartItem {
+  cartId: string;
+  id: string;
+  code?: string;
+  name: string;
+  category?: string;
+  price: number;
+  size?: string;
+  image: string;
   quantity: number;
+  isVeg?: boolean;
+}
+
+interface AddItemParams {
+  id: string;
+  code?: string;
+  name: string;
+  category?: string;
+  price: number;
+  size?: string;
+  image: string;
+  quantity?: number;
+  isVeg?: boolean;
 }
 
 interface OrderContextType {
-  order: OrderItem[];
+  order: CartItem[];
   isOpen: boolean;
-  openOrderDrawer: (initialItem?: MenuItem) => void;
+  openOrderDrawer: (initialItem?: any) => void;
   closeOrderDrawer: () => void;
-  addToOrder: (item: MenuItem) => void;
-  removeFromOrder: (itemId: string) => void;
-  updateQuantity: (itemId: string, delta: number) => void;
+  addToOrder: (item: any, size?: string, customPrice?: number) => void;
+  removeFromOrder: (cartId: string) => void;
+  updateQuantity: (cartId: string, delta: number) => void;
   clearOrder: () => void;
   totalCount: number;
   totalPrice: number;
   getWhatsAppOrderUrl: (notes?: string) => string;
+  getPizzaTruckWhatsAppUrl: () => string;
 }
 
 const OrderContext = createContext<OrderContextType | null>(null);
 
+export const RESTAURANT_PHONE = "77078-13600";
+export const RESTAURANT_WHATSAPP_NUMBER = "917707813600";
+export const RESTAURANT_UPI_ID = "9501201215-1@okbizaxis";
+export const RESTAURANT_OWNER = "Jaspreet Singh";
+
 export function OrderProvider({ children }: { children: React.ReactNode }) {
-  const [order, setOrder] = useState<OrderItem[]>([]);
+  const [order, setOrder] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
   // Load cart from session if available
   useEffect(() => {
     try {
-      const saved = sessionStorage.getItem("ghumans_cart");
+      const saved = sessionStorage.getItem("ghumans_cart_v2") || sessionStorage.getItem("ghumans_cart");
       if (saved) {
-        setOrder(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          // Normalize legacy structure if needed
+          const normalized: CartItem[] = parsed.map((entry: any) => {
+            if (entry.item) {
+              const it = entry.item;
+              return {
+                cartId: `${it.id}-${entry.size || "std"}`,
+                id: it.id,
+                name: it.name,
+                price: entry.price || it.price,
+                size: entry.size,
+                image: it.image,
+                quantity: entry.quantity || 1,
+                isVeg: true,
+              };
+            }
+            return {
+              ...entry,
+              cartId: entry.cartId || `${entry.id}-${entry.size || "std"}`,
+            };
+          });
+          setOrder(normalized);
+        }
       }
     } catch {
-      // ignore
+      // ignore parse error
     }
   }, []);
 
   useEffect(() => {
     try {
-      sessionStorage.setItem("ghumans_cart", JSON.stringify(order));
+      sessionStorage.setItem("ghumans_cart_v2", JSON.stringify(order));
     } catch {
       // ignore
     }
   }, [order]);
 
-  const addToOrder = (item: MenuItem) => {
+  const addToOrder = (item: any, selectedSize?: string, customPrice?: number) => {
+    const size = selectedSize || item.selectedSize || undefined;
+    const price = customPrice !== undefined ? customPrice : item.selectedPrice || item.price;
+    const cartId = `${item.id}-${size || "std"}`;
+
     setOrder((prev) => {
-      const existing = prev.find((entry) => entry.item.id === item.id);
-      if (existing) {
-        return prev.map((entry) =>
-          entry.item.id === item.id
+      const existingIndex = prev.findIndex((entry) => entry.cartId === cartId);
+      if (existingIndex > -1) {
+        return prev.map((entry, index) =>
+          index === existingIndex
             ? { ...entry, quantity: entry.quantity + 1 }
             : entry
         );
       }
-      return [...prev, { item, quantity: 1 }];
+      const newItem: CartItem = {
+        cartId,
+        id: item.id,
+        code: item.code,
+        name: item.name,
+        category: item.category,
+        price,
+        size,
+        image: item.image,
+        quantity: 1,
+        isVeg: item.isVeg !== undefined ? item.isVeg : true,
+      };
+      return [...prev, newItem];
     });
+
     setIsOpen(true);
   };
 
-  const openOrderDrawer = (initialItem?: MenuItem) => {
+  const openOrderDrawer = (initialItem?: any) => {
     if (initialItem) {
       addToOrder(initialItem);
     } else {
@@ -71,21 +136,21 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
 
   const closeOrderDrawer = () => setIsOpen(false);
 
-  const removeFromOrder = (itemId: string) => {
-    setOrder((prev) => prev.filter((entry) => entry.item.id !== itemId));
+  const removeFromOrder = (cartId: string) => {
+    setOrder((prev) => prev.filter((entry) => entry.cartId !== cartId && entry.id !== cartId));
   };
 
-  const updateQuantity = (itemId: string, delta: number) => {
+  const updateQuantity = (cartId: string, delta: number) => {
     setOrder((prev) =>
       prev
         .map((entry) => {
-          if (entry.item.id === itemId) {
+          if (entry.cartId === cartId || entry.id === cartId) {
             const newQty = entry.quantity + delta;
             return newQty > 0 ? { ...entry, quantity: newQty } : null;
           }
           return entry;
         })
-        .filter((entry): entry is OrderItem => entry !== null)
+        .filter((entry): entry is CartItem => entry !== null)
     );
   };
 
@@ -93,34 +158,39 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
 
   const totalCount = order.reduce((sum, entry) => sum + entry.quantity, 0);
   const totalPrice = order.reduce(
-    (sum, entry) => sum + entry.item.price * entry.quantity,
+    (sum, entry) => sum + entry.price * entry.quantity,
     0
   );
 
   const getWhatsAppOrderUrl = (notes?: string) => {
-    const phoneNumber = "919501201215";
     if (order.length === 0) {
-      const defaultMsg = encodeURIComponent(
-        "Hello Ghumans Kitchen Express! 👋\nI'd like to check today's live food truck menu and place an order at Grand Trunk Road, Dhilwan."
-      );
-      return `https://wa.me/${phoneNumber}?text=${defaultMsg}`;
+      const defaultMsg =
+        "Hello Ghumans Kitchen Express,\nI would like to explore today's fresh menu and place an order.\nPlease share details!";
+      return `https://wa.me/${RESTAURANT_WHATSAPP_NUMBER}?text=${encodeURIComponent(defaultMsg)}`;
     }
 
-    let message = "🍔 *GHUMANS KITCHEN EXPRESS ORDER* 🍕\n";
-    message += "📍 Location: GT Road, Dhilwan (Near Toll Plaza)\n";
-    message += "──────────────────────\n";
+    // Exact requested format from user specification
+    let message = "Hello Ghumans Kitchen Express,\n";
+    message += "I would like to place an order:\n\n";
+
     order.forEach((entry, i) => {
-      message += `${i + 1}. *${entry.item.name}* x ${entry.quantity} = ₹${entry.item.price * entry.quantity}\n`;
+      const sizeNote = entry.size ? ` (${entry.size})` : "";
+      message += `${i + 1}. ${entry.name}${sizeNote} × ${entry.quantity}\n`;
     });
-    message += "──────────────────────\n";
-    message += `💰 *Total Amount: ₹${totalPrice}*\n`;
-    message += `🌱 *Pure Vegetarian Order*\n`;
-    if (notes && notes.trim()) {
-      message += `📝 Special instructions: ${notes.trim()}\n`;
-    }
-    message += "\nPlease confirm preparation time. Thank you!";
 
-    return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    message += `\nTotal: ₹${totalPrice}\n\n`;
+    if (notes && notes.trim()) {
+      message += `Note: ${notes.trim()}\n\n`;
+    }
+    message += "Please confirm my order.";
+
+    return `https://wa.me/${RESTAURANT_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  };
+
+  const getPizzaTruckWhatsAppUrl = () => {
+    const msg =
+      "Hello Ghumans Kitchen Express! 🍕🚚\nI am interested in booking your Pizza Truck / Catering service for an upcoming party/event.\nPlease share package details, pricing, and availability.\nThank you!";
+    return `https://wa.me/${RESTAURANT_WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   };
 
   return (
@@ -137,6 +207,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
         totalCount,
         totalPrice,
         getWhatsAppOrderUrl,
+        getPizzaTruckWhatsAppUrl,
       }}
     >
       {children}
